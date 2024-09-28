@@ -1,10 +1,12 @@
-# EntAppFinal
+# Enterprise Application Final Project
 
-Enterprise Application Final Project
+Card Collection Application 
 
 ## Introduction
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+The Card Collection Application will allow users to maintain an online database of their cards that will be searchable. It will allow the user to add cards not currently found to the collection to ensure all
+cards in a collection can be maintained.The database will also support a funtionality of allowing the user to see which cards are among the most valuable and popular in the collection. The application will allow
+users to maintain the database easily and ensure and carefree way to check a personal collection. 
 
 ## Storyboard
 
@@ -65,10 +67,25 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 ## JSON Schema
 
 ## Scrum Roles
+Isabelle Kramer - UI Designer
+
+Danny Murray - Business Logic / Persistence
+
+Austin Schnee - Business Logic Development
+
+Paul Sparks - Business Logic / Persistence
+
+Brandon Robinson - UI Specialist
+
+Jonathon Leicht - Scrum Maser / QA
 
 ## Milestones
 
-[Milestones](https://github.com/leichtje/EntAppFinal/milestones)
+[Milestone 1 - Create Project Scaffold For Card Collection Application](https://github.com/leichtje/EntAppFinal/milestone/1)
+
+[Milestone 2 - Create the Business Logic of the Card Collection Program](https://github.com/leichtje/EntAppFinal/milestone/2)
+
+[Milestone 3 - Finalize the Finished Card Collection Application](https://github.com/leichtje/EntAppFinal/milestone/3)
 
 ## Standup
 
