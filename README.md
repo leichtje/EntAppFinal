@@ -60,11 +60,23 @@ users to maintain the database easily and ensure and carefree way to check a per
 
 ## Class Diagram
 
-![ClassDiagram]()
+![ClassDiagram](https://github.com/leichtje/EntAppFinal/blob/main/card_app_class_diagram.drawio.png)
 
 ### Class Diagram Description
 
+CardController - Will maintain the integrity of the Project
+
+ICardService - Maintains the parameters to browse the card collections
+
+Card DTO - Stored card section to maintain the DB operation of inputed cards
+
+Card DAO - Card communication service handler
+
 ## JSON Schema
+
+## Github Project Link
+
+[See our Github for the Project here](https://github.com/leichtje/EntAppFinal)
 
 ## Scrum Roles
 
@@ -87,6 +99,10 @@ Jonathon Leicht - Scrum Maser / QA
 [Milestone 2 - Create the Business Logic of the Card Collection Program](https://github.com/leichtje/EntAppFinal/milestone/2)
 
 [Milestone 3 - Finalize the Finished Card Collection Application](https://github.com/leichtje/EntAppFinal/milestone/3)
+
+### Projects Dashboard
+
+[See Projects related to this Application here](https://github.com/leichtje/EntAppFinal/projects?query=is%3Aopen)
 
 ## Standup
 
