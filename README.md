@@ -60,19 +60,55 @@ users to maintain the database easily and ensure and carefree way to check a per
 
 ## Class Diagram
 
-![ClassDiagram](https://github.com/leichtje/EntAppFinal/blob/main/card_app_class_diagram.drawio.png)
+![Card Collection Class Diagram](https://github.com/leichtje/EntAppFinal/blob/main/card_app_class_diagram.drawio.png)
 
 ### Class Diagram Description
+**DTO**
 
-CardController - Will maintain the integrity of the Project
+Card: Used as a representation of a card and the data used for them in our application.
 
-ICardService - Maintains the parameters to browse the card collections
+**DAO**
 
-Card DTO - Stored card section to maintain the DB operation of inputed cards
+ICardDAO: Will be used as way to access database containing card info.
 
-Card DAO - Card communication service handler
+**Service**
+
+ICardService: Used as contract to define what methods will be needed when developing the CardService.
+
+CardService: Will be used as the actual implementation of business logic realted to cards.
+
+CardServiceStub: Will be used to unit test card service.
+
+**Controller**
+
+CardController: Used to handle input that tries to access card data.
 
 ## JSON Schema
+```
+{
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "integer"
+    },
+    "cardName": {
+      "type": "string"
+    },
+    "series": {
+      "type": "string"
+    },
+    "favoritesNum": {
+      "type": "integer"
+    },
+    "marketAvg": {
+      "type": "string"
+    },
+    "rarity": {
+      "type": "string"
+    }
+  }
+}
+```
 
 ## Github Project Link
 
