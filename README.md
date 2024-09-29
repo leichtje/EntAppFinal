@@ -1,12 +1,12 @@
 # Enterprise Application Final Project
 
-Card Collection Application 
+Card Collection Application
 
 ## Introduction
 
 The Card Collection Application will allow users to maintain an online database of their cards that will be searchable. It will allow the user to add cards not currently found to the collection to ensure all
 cards in a collection can be maintained.The database will also support a funtionality of allowing the user to see which cards are among the most valuable and popular in the collection. The application will allow
-users to maintain the database easily and ensure and carefree way to check a personal collection. 
+users to maintain the database easily and ensure and carefree way to check a personal collection.
 
 ## Storyboard
 
@@ -14,7 +14,7 @@ users to maintain the database easily and ensure and carefree way to check a per
 
 ## Functional Requirements
 
-1. As a trading card collector, I want one central online catalog where I can query the current rarity and market price of any card, so that I can figure out how much I should sell my Pokemon cards for.
+1. As a trading card collector, I want one central online catalog where I can query the current popularity and market price of any card, so that I can figure out how much I should sell my Pokemon cards for.
 
 ### Example
 
@@ -22,7 +22,7 @@ users to maintain the database easily and ensure and carefree way to check a per
 
 **When**: The user/service searches for a trading card with an ID or name that exists in the database
 
-**Then**: The trading card catalog API responds to the user/service with JSON data specifying the card name, ID, rarity, and market price
+**Then**: The trading card catalog API responds to the user/service with JSON data specifying the card name, ID, popularity, and market price
 
 ### Example
 
@@ -40,13 +40,13 @@ users to maintain the database easily and ensure and carefree way to check a per
 
 **Then**: The trading card catalog API responds to the user/service with a 400 Bad Request error
 
-2. As a Yu-Gi-Oh card expert and administrator of this online trading card catalog, I want to be able to upload information on a card's rarity and market price, so that user who wants to view that information can do so.
+2. As a Yu-Gi-Oh card expert and administrator of this online trading card catalog, I want to be able to upload information on a card's popularity and market price, so that user who wants to view that information can do so.
 
 ### Example
 
 **Given**: The user is logged in (only admins have accounts, as the card information retrieval service is available to everyone)
 
-**When**: The user uploads information about a trading card using valid fields (id, name, rarity, market price)
+**When**: The user uploads information about a trading card using valid fields (id, name, popularity, market price)
 
 **Then**: The API saves the trading card to the database with the given information
 
@@ -67,6 +67,7 @@ users to maintain the database easily and ensure and carefree way to check a per
 ## JSON Schema
 
 ## Scrum Roles
+
 Isabelle Kramer - UI Designer
 
 Danny Murray - Business Logic / Persistence
