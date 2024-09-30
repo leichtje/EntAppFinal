@@ -5,8 +5,11 @@ Card Collection Application
 ## Introduction
 
 The Card Collection Application will allow users to maintain an online database of their cards that will be searchable. It will allow the user to add cards not currently found to the collection to ensure all
-cards in a collection can be maintained.The database will also support a funtionality of allowing the user to see which cards are among the most valuable and popular in the collection. The application will allow
-users to maintain the database easily and ensure and carefree way to check a personal collection.
+cards in a collection can be maintained.
+
+The database will also support a funtionality of allowing the user to see which cards are among the most valuable and popular in the collection. 
+
+The application will allow users to maintain the database easily and ensure and carefree way to check a personal collection.
 
 ## Storyboard
 
