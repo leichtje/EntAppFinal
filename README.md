@@ -106,7 +106,7 @@ CardController: Used to handle input that tries to access card data.
     "marketAvg": {
       "type": "string"
     },
-    "rarity": {
+    "popularity": {
       "type": "string"
     }
   }
