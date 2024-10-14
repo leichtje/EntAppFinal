@@ -36,7 +36,27 @@ class DissCardApplicationTests {
     private void thenReturnCharizardCardDataForId9() {
         assertEquals("Charizard", card.getCardName());
         assertEquals("5%", card.getPopularity());
-        assertEquals("$3,600", card.marketAvg());
+        assertEquals("$3,600", card.getMarketAvg());
+    }
+
+    @Test
+    void saveCard_validateReturnWithBlastoiseAttributes() {
+        givenAdminLoggedIn();
+        whenBlastoiseCardDataUploadedWithValidFields();
+        thenCreateBlastoiseCardAndReturnSuccessfulResponse();
+    }
+
+    private void givenAdminLoggedIn() {
+    }
+
+    private void whenBlastoiseCardDataUploadedWithValidFields() {
+        card.setCardName("Blastoise");
+        card.setPopularity("10%");
+        card.setMarketAvg("$2,000");
+    }
+
+    private void thenCreateBlastoiseCardAndReturnSuccessfulResponse() {
+        cardService.save(card);
     }
 
 }
