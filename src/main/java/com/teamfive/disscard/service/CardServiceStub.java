@@ -12,7 +12,7 @@ public class CardServiceStub implements ICardService {
         Card card = new Card();
         card.setId(9);
         card.setCardName("Charizard");
-        card.setPopularity("5%");
+        card.setPopularity(8000);
         card.setMarketAvg("$3,600");
         return card;
     }

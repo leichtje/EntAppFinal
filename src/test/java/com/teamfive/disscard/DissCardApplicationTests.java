@@ -35,7 +35,7 @@ class DissCardApplicationTests {
 
     private void thenReturnCharizardCardDataForId9() {
         assertEquals("Charizard", card.getCardName());
-        assertEquals("5%", card.getPopularity());
+        assertEquals(8000, card.getPopularity());
         assertEquals("$3,600", card.getMarketAvg());
     }
 
@@ -51,7 +51,7 @@ class DissCardApplicationTests {
 
     private void whenBlastoiseCardDataUploadedWithValidFields() {
         card.setCardName("Blastoise");
-        card.setPopularity("10%");
+        card.setPopularity(12000);
         card.setMarketAvg("$2,000");
     }
 
