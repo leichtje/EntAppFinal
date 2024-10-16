@@ -7,12 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 @SpringBootTest
 class DissCardApplicationTests {
 
     @Autowired
-    ICardService cardService;
+    private ICardService cardService;
     private Card card = new Card();
 
     @Test
@@ -37,6 +38,21 @@ class DissCardApplicationTests {
         assertEquals("Charizard", card.getCardName());
         assertEquals(8000, card.getPopularity());
         assertEquals("$3,600", card.getMarketAvg());
+    }
+
+    @Test
+    void getCardById_returnsNotificationOfFailureFor0() {
+        givenTradingCardCatalogAvailable();
+        whenSearchCardWithId0();
+        thenReturnId0IsInvalid();
+    }
+
+    private void whenSearchCardWithId0() {
+        card = cardService.getById(0);
+    }
+
+    private void thenReturnId0IsInvalid() {
+        assertNull(card);
     }
 
     @Test
