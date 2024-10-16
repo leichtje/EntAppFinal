@@ -9,12 +9,16 @@ import java.util.List;
 public class CardServiceStub implements ICardService {
     @Override
     public Card getById(int id) {
-        Card card = new Card();
-        card.setId(9);
-        card.setCardName("Charizard");
-        card.setPopularity(8000);
-        card.setMarketAvg("$3,600");
-        return card;
+        if (id == 9) {
+            Card card = new Card();
+            card.setId(9);
+            card.setCardName("Charizard");
+            card.setPopularity(8000);
+            card.setMarketAvg("$3,600");
+            return card;
+        } else {
+            return null;
+        }
     }
 
     @Override
