@@ -1,10 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
 <head>
     <meta charset="UTF-8">
     <title>Popular Cards</title>
 </head>
+<div th:insert="header : fragments/navbar.html"></div>
+<div th:insert="header : fragments/searchbar.html"></div>
 <body>
+<div style="background-color: #1e2441; color: white">
+    <h3>Popular Finds</h3>
+    <div th:each="card : Card">
 
+        <div class="card h-100">
+            <img src="https://example.com/img/sample.jpg" class="card-img-top" alt="${card.name}">
+            <div class="card-body">
+                <h5 th:text="${card.name}"></h5>
+                <p th:text="${card.series}"></p>
+                <p th:text="${card.popularity}"></p>
+            </div>
+        </div>
+
+
+    </div>
+</div>
 </body>
 </html>
