@@ -1,12 +1,23 @@
 package com.teamfive.disscard.service;
 
+import com.teamfive.disscard.dao.ICardDAO;
 import com.teamfive.disscard.dto.Card;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
 public class CardServiceStub implements ICardService {
+
+    private ICardDAO cardDAO;
+
+    public CardServiceStub() {}
+
+    public CardServiceStub(ICardDAO cardDAO) {
+        this.cardDAO = cardDAO;
+    }
+
     @Override
     public Card getById(int id) {
         if (id == 9) {
@@ -32,7 +43,7 @@ public class CardServiceStub implements ICardService {
     }
 
     @Override
-    public void save(Card card) {
-
+    public void save(Card card) throws Exception {
+        cardDAO.save(card);
     }
 }

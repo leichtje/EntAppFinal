@@ -1,13 +1,17 @@
 package com.teamfive.disscard;
 
+import com.teamfive.disscard.dao.ICardDAO;
 import com.teamfive.disscard.dto.Card;
+import com.teamfive.disscard.service.CardServiceStub;
 import com.teamfive.disscard.service.ICardService;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 class DissCardApplicationTests {
@@ -16,18 +20,23 @@ class DissCardApplicationTests {
     private ICardService cardService;
     private Card card = new Card();
 
+    @MockBean
+    private ICardDAO cardDAO;
+
     @Test
     void contextLoads() {
     }
 
     @Test
-    void getCardById_returnsCharizardForId9() {
+    void getCardById_returnsCharizardForId9() throws Exception {
         givenTradingCardCatalogAvailable();
         whenSearchCardWithId9();
         thenReturnCharizardCardDataForId9();
     }
 
-    private void givenTradingCardCatalogAvailable() {
+    private void givenTradingCardCatalogAvailable() throws Exception {
+        when(cardDAO.save(card)).thenReturn(card);
+        cardService = new CardServiceStub(cardDAO);
     }
 
     private void whenSearchCardWithId9() {
@@ -41,7 +50,7 @@ class DissCardApplicationTests {
     }
 
     @Test
-    void getCardById_returnsNotificationOfFailureFor0() {
+    void getCardById_returnsNotificationOfFailureFor0() throws Exception {
         givenTradingCardCatalogAvailable();
         whenSearchCardWithId0();
         thenReturnId0IsInvalid();
@@ -56,8 +65,9 @@ class DissCardApplicationTests {
     }
 
     @Test
-    void saveCard_validateReturnWithBlastoiseAttributes() {
+    void saveCard_validateReturnWithBlastoiseAttributes() throws Exception {
         givenAdminLoggedIn();
+        givenTradingCardCatalogAvailable();
         whenBlastoiseCardDataUploadedWithValidFields();
         thenCreateBlastoiseCardAndReturnSuccessfulResponse();
     }
@@ -71,8 +81,9 @@ class DissCardApplicationTests {
         card.setMarketAvg("$2,000");
     }
 
-    private void thenCreateBlastoiseCardAndReturnSuccessfulResponse() {
+    private void thenCreateBlastoiseCardAndReturnSuccessfulResponse() throws Exception {
         cardService.save(card);
+        verify(cardDAO, atLeastOnce()).save(card);
     }
 
 }
