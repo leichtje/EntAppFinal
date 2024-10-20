@@ -11,7 +11,7 @@ public interface ICardDAO {
 
     Card get(int id);
 
-    Card getByName(String keyword);
+    List<Card> getByName(String keyword);
 
     void delete(int id);
 }
