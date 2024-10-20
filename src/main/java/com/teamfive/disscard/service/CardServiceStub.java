@@ -5,6 +5,8 @@ import com.teamfive.disscard.dto.Card;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.sql.Array;
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -39,7 +41,19 @@ public class CardServiceStub implements ICardService {
 
     @Override
     public List<Card> searchByName(String keyword) {
-        return cardDAO.getByName(keyword);
+        if (keyword.equals("Chari")) {
+            Card card = new Card();
+            card.setId(9);
+            card.setCardName("Charizard");
+            card.setPopularity(8000);
+            card.setMarketAvg("$3,600");
+
+            List<Card> searchResults = new ArrayList<>();
+            searchResults.add(card);
+            return searchResults;
+        } else {
+            return null;
+        }
     }
 
     @Override

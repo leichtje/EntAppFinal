@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -18,6 +21,7 @@ class DissCardApplicationTests {
     @Autowired
     private ICardService cardService;
     private Card card = new Card();
+    private List<Card> cards = new ArrayList<>();
 
     @MockBean
     private ICardDAO cardDAO;
@@ -61,6 +65,26 @@ class DissCardApplicationTests {
 
     private void thenReturnId0IsInvalid() {
         assertNull(card);
+    }
+
+    @Test
+    void searchCardByName_returnListContainingCharizardFromKeywordChari() throws Exception {
+        givenTradingCardCatalogAvailable();
+        whenSearchCardByNameUsingKeywordChari();
+        thenReturnListContainingCharizard();
+    }
+
+    private void whenSearchCardByNameUsingKeywordChari() {
+        cards = cardService.searchByName("Chari");
+
+        card.setId(9);
+        card.setCardName("Charizard");
+        card.setPopularity(8000);
+        card.setMarketAvg("$3,600");
+    }
+
+    private void thenReturnListContainingCharizard() {
+        assertTrue(cards.contains(card));
     }
 
     @Test
