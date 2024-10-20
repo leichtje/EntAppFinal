@@ -34,12 +34,12 @@ public class CardServiceStub implements ICardService {
 
     @Override
     public List<Card> getAll() {
-        return List.of();
+        return cardDAO.getAll();
     }
 
     @Override
     public List<Card> searchByName(String keyword) {
-        return List.of();
+        return cardDAO.getByName(keyword);
     }
 
     @Override
