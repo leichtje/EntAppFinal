@@ -43,7 +43,13 @@ public class CardServiceStub implements ICardService {
     }
 
     @Override
-    public void save(Card card) throws Exception {
-        cardDAO.save(card);
+    public Card save(Card card) throws Exception {
+        Card savedCard = cardDAO.save(card);
+
+        if (savedCard.cardName == null || savedCard.cardName.isEmpty()) {
+            return null;
+        } else {
+            return savedCard;
+        }
     }
 }

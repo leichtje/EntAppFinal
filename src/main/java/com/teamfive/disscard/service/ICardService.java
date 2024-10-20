@@ -28,6 +28,7 @@ public interface ICardService {
     /**
      * Saves the given card info in storage.
      * @param card The card you wish to record.
+     * @return The card that was saved.
      */
-    void save(Card card) throws Exception;
+    Card save(Card card) throws Exception;
 }

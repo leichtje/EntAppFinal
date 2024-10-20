@@ -5,7 +5,6 @@ import com.teamfive.disscard.dto.Card;
 import com.teamfive.disscard.service.CardServiceStub;
 import com.teamfive.disscard.service.ICardService;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -82,8 +81,26 @@ class DissCardApplicationTests {
     }
 
     private void thenCreateBlastoiseCardAndReturnSuccessfulResponse() throws Exception {
-        cardService.save(card);
+        assertEquals(card, cardService.save(card));
         verify(cardDAO, atLeastOnce()).save(card);
     }
 
+    @Test
+    void saveCard_returnsNotificationOfFailureForEmptyName() throws Exception {
+        givenAdminLoggedIn();
+        givenTradingCardCatalogAvailable();
+        whenCardDataUploadedWithEmptyName();
+        thenReturnBlankNameIsInvalid();
+    }
+
+    private void whenCardDataUploadedWithEmptyName() {
+        card.setCardName("");
+        card.setPopularity(12000);
+        card.setMarketAvg("$2,000");
+    }
+
+    private void thenReturnBlankNameIsInvalid() throws Exception {
+        assertNotEquals(card, cardService.save(card));
+        verify(cardDAO, atLeastOnce()).save(card);
+    }
 }
