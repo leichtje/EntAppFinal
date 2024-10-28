@@ -1,6 +1,7 @@
 package com.teamfive.disscard.dto;
 
 import lombok.Data;
+import com.google.gson.annotations.SerializedName;
 
 /**
  * DTO object representing card data
@@ -8,10 +9,8 @@ import lombok.Data;
 public @Data class Card {
     /**
      * ID of card in database
-     * <div>
-     *     TODO: add @SerializedName annotation once database is set up to map column names to attribute names
-     * </div>
      */
+    @SerializedName("id")
     public int id;
     /**
      * Name of card
