@@ -5,6 +5,7 @@ import com.google.gson.annotations.*;
 
 /**
  * DTO object representing card data
+ * @author Danny Murray
  */
 public @Data class Card {
     /**
