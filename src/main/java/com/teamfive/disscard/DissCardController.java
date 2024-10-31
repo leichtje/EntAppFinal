@@ -101,9 +101,10 @@ public class DissCardController {
         HttpHeaders headers = new HttpHeaders();
         try {
             newCard = cardService.save(card);
+            log.info("Card added successfully: {}", newCard);
         }
         catch (Exception e) {
-            log.error(e.getMessage());
+            log.error("Error while adding card: {}. Exception: {}", card, e.getMessage());
             return new ResponseEntity<>(headers, HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return new ResponseEntity<>(newCard, headers, HttpStatus.OK);
