@@ -33,12 +33,14 @@ public class CardServiceStub implements ICardService {
             return null;
         }
     }
+    
 
     @Override
     public List<Card> getAll() {
-        return cardDAO.getAll();
+        List<Card> cards = cardDAO.getAll();
+        return cards != null ? cards : new ArrayList<>();
     }
-
+    
     @Override
     public List<Card> searchByName(String keyword) {
         if (keyword.equals("Chari")) {
@@ -47,23 +49,30 @@ public class CardServiceStub implements ICardService {
             card.setCardName("Charizard");
             card.setPopularity(8000);
             card.setMarketAvg("$3,600");
-
+    
             List<Card> searchResults = new ArrayList<>();
             searchResults.add(card);
             return searchResults;
         } else {
-            return null;
+            return new ArrayList<>();
         }
     }
+    
 
     @Override
-    public Card save(Card card) throws Exception {
-        Card savedCard = cardDAO.save(card);
-
-        if (savedCard.cardName == null || savedCard.cardName.isEmpty()) {
+    public Card save(Card card) {
+        try {
+            Card savedCard = cardDAO.save(card);
+    
+            if (savedCard.getCardName() == null || savedCard.getCardName().isEmpty()) {
+                return null;
+            } else {
+                return savedCard;
+            }
+        } catch (Exception e) {
+            System.err.println("Error saving card: " + e.getMessage());
             return null;
-        } else {
-            return savedCard;
         }
     }
+    
 }
