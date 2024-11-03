@@ -32,21 +32,29 @@ class DissCardApplicationTests {
 
     @Test
     void getCardById_returnsCharizardForId9() throws Exception {
+        System.out.println("Setting up trading card catalog availability");
         givenTradingCardCatalogAvailable();
+        
+        System.out.println("Searching card with ID 9");
         whenSearchCardWithId9();
+        
+        System.out.println("Asserting that the returned card data matches Charizard's attributes");
         thenReturnCharizardCardDataForId9();
     }
-
+    
     private void givenTradingCardCatalogAvailable() throws Exception {
+        System.out.println("Mocking cardDAO save method to return the card");
         when(cardDAO.save(card)).thenReturn(card);
         cardService = new CardServiceStub(cardDAO);
     }
-
+    
     private void whenSearchCardWithId9() {
+        System.out.println("Fetching card by ID 9");
         card = cardService.getById(9);
     }
-
+    
     private void thenReturnCharizardCardDataForId9() {
+        System.out.println("Checking if the returned card is Charizard");
         assertEquals("Charizard", card.getCardName());
         assertEquals(8000, card.getPopularity());
         assertEquals("$3,600", card.getMarketAvg());
