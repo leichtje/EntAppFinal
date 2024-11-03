@@ -74,7 +74,9 @@ public class DissCardController {
         Card fetchedCard = cardService.getById(id);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        return new ResponseEntity<>(fetchedCard, headers, HttpStatus.OK);
+        return fetchedCard != null 
+            ? new ResponseEntity<>(fetchedCard, headers, HttpStatus.OK) 
+            : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     /**
