@@ -9,7 +9,7 @@ public interface ICardDAO {
 
     List<Card> getAll();
 
-    Card get(int id);
+    Card findById(int id);
 
     List<Card> getByName(String keyword);
 

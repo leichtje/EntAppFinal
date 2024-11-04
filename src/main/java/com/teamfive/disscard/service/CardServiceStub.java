@@ -60,7 +60,7 @@ public class CardServiceStub implements ICardService {
     public Card save(Card card) throws Exception {
         Card savedCard = cardDAO.save(card);
 
-        if (savedCard.cardName == null || savedCard.cardName.isEmpty()) {
+        if (savedCard.getCardName() == null || savedCard.getCardName().isEmpty()) {
             return null;
         } else {
             return savedCard;
