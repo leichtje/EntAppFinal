@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class CardServiceStub implements ICardService {
@@ -18,6 +19,10 @@ public class CardServiceStub implements ICardService {
 
     public CardServiceStub(ICardDAO cardDAO) {
         this.cardDAO = cardDAO;
+    }
+
+    private boolean isValidCard(Card card) {
+        return card != null && card.getCardName() != null && !card.getCardName().isEmpty();
     }
 
     @Override
@@ -60,7 +65,7 @@ public class CardServiceStub implements ICardService {
     public Card save(Card card) throws Exception {
         Card savedCard = cardDAO.save(card);
 
-        if (savedCard.cardName == null || savedCard.cardName.isEmpty()) {
+        if (!isValidCard(card)) {
             return null;
         } else {
             return savedCard;
