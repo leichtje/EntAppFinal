@@ -151,22 +151,27 @@ public class DissCardControllerUnitTests {
 
     /**
      * Tests the addCard method of the controller
-     * @throws Exception Unable to save card to system
      */
     @Test
-    public void addCard_returnsSavedCard() throws Exception {
+    public void addCard_returnsSavedCard() {
         givenCardServiceIsAvailable();
         Card returnedCard = whenAddCardToSystem();
         thenReturnOneCard(returnedCard);
     }
 
-    private Card whenAddCardToSystem() throws Exception {
+    private Card whenAddCardToSystem() {
         // Generate Card
         generateCard();
 
         // Return card when saving card
         logger.info("Setting service mock to return generated card when saving generated card");
-        Mockito.when(cardService.save(card)).thenReturn(card);
+        try {
+            Mockito.when(cardService.save(card)).thenReturn(card);
+        }
+        catch (Exception e) {
+            logger.error("Unable to set card service mock to save generated card");
+            logger.error(e.getMessage());
+        }
 
         // Add card through controller
         logger.info("Adding card to system");
