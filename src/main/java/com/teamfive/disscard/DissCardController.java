@@ -86,6 +86,7 @@ public class DissCardController {
      */
     @GetMapping(value = "/card/info/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     // Better to add a try and catch block here
+    // Changed name: fetchCard -> fetchCardById
     public ResponseEntity<Card> fetchCardById(@PathVariable("id") int id) {
         try {
             log.info("Fetching card with ID: {}", id);
