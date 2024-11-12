@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
-class DissCardApplicationTests {
+class CardServiceTests {
 
     @Autowired
     private ICardService cardService;

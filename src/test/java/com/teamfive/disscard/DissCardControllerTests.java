@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.ResponseEntity;
@@ -20,10 +19,10 @@ import java.util.List;
  * @author Danny Murray
  */
 @SpringBootTest
-public class DissCardControllerUnitTests {
+public class DissCardControllerTests {
 
     private Card card;
-    private static final Logger logger = LoggerFactory.getLogger(DissCardControllerUnitTests.class);
+    private static final Logger logger = LoggerFactory.getLogger(DissCardControllerTests.class);
     private DissCardController controller;
 
     @MockBean
