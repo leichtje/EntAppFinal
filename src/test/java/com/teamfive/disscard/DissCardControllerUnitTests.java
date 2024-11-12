@@ -70,6 +70,21 @@ public class DissCardControllerUnitTests {
         List<Card> cardList = new ArrayList<>();
         cardList.add(card);
         Mockito.when(cardService.getAll()).thenReturn(cardList);
+
+        // Return list containing card when searching by keyword
+        logger.info("Setting service mock to return list containing generated card when searching by keyword");
+        Mockito.when(cardService.searchByName(card.getCardName())).thenReturn(cardList);
+    }
+
+    private void thenReturnListContainingOneCard(List<Card> cardList) {
+        // Check that list contains 1 card
+        logger.info("Checking that card list only contains one card");
+        assertEquals(cardList.size(), 1);
+
+        // Check values of card in list
+        logger.info("Checking that the data of the card in the list is accurate");
+        Card cardInList = cardList.getFirst();
+        assertEquals(cardInList, card);
     }
 
     // ===== Tests =====
@@ -89,17 +104,6 @@ public class DissCardControllerUnitTests {
     private List<Card> whenFetchAllCards() {
         logger.info("Fetching list of all cards");
         return controller.fetchAllCards();
-    }
-
-    private void thenReturnListContainingOneCard(List<Card> cardList) {
-        // Check that list contains 1 card
-        logger.info("Checking that card list only contains one card");
-        assertEquals(cardList.size(), 1);
-
-        // Check values of card in list
-        logger.info("Checking that the data of the card in the list is accurate");
-        Card cardInList = cardList.getFirst();
-        assertEquals(cardInList, card);
     }
 
     /**
@@ -123,5 +127,23 @@ public class DissCardControllerUnitTests {
     private void thenReturnOneCard(Card fetchedCard) {
         logger.info("Checking that the data of the returned card is accurate");
         assertEquals(fetchedCard, card);
+    }
+
+    /**
+     * Tests fetchCardsByKeyword method of controller
+     * @throws Exception Could not initialize card service mock
+     */
+    @Test
+    public void fetchCardsByKeyword_returnsListOfCards() throws Exception {
+        givenCardServiceIsAvailable();
+        whenOneCardSavedToSystem();
+        List<Card> cardList = whenFetchingCardsByKeyword();
+        thenReturnListContainingOneCard(cardList);
+    }
+
+    private List<Card> whenFetchingCardsByKeyword() {
+        logger.info("Fetching list of cards by keyword");
+        ResponseEntity<List<Card>> response = controller.fetchCardsByKeyword(card.getCardName());
+        return response.getBody();
     }
 }
