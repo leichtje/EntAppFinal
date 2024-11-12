@@ -2,13 +2,10 @@ package com.teamfive.disscard.service;
 
 import com.teamfive.disscard.dao.ICardDAO;
 import com.teamfive.disscard.dto.Card;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Component
 public class CardServiceStub implements ICardService {
@@ -19,10 +16,6 @@ public class CardServiceStub implements ICardService {
 
     public CardServiceStub(ICardDAO cardDAO) {
         this.cardDAO = cardDAO;
-    }
-
-    private boolean isValidCard(Card card) {
-        return card != null && card.getCardName() != null && !card.getCardName().isEmpty();
     }
 
     @Override
@@ -65,7 +58,7 @@ public class CardServiceStub implements ICardService {
     
 
     @Override
-  public Card save(Card card) {
+    public Card save(Card card) {
         try {
             Card savedCard = cardDAO.save(card);
     
@@ -80,6 +73,10 @@ public class CardServiceStub implements ICardService {
 
             return null;
         }
+    }
+
+    private boolean isValidCard(Card card) {
+        return card != null && !card.getCardName().isBlank();
     }
     
 }
