@@ -31,7 +31,7 @@ public class CardDAOStub implements ICardDAO {
     }
 
     @Override
-    public Card get(int id) {
+    public Card findById(int id) {
         return cardDataStore.get(id);
     }
 
@@ -41,7 +41,7 @@ public class CardDAOStub implements ICardDAO {
         ArrayList<Card> foundCards = new ArrayList<>();
 
         cardDataStore.forEach((id, card) -> {
-            if (card.cardName.contains(keyword)) {
+            if (card.getCardName().contains(keyword)) {
                 foundCards.add(card);
             }
         });

@@ -31,7 +31,7 @@ public class CardDAO implements ICardDAO {
     }
 
     @Override
-    public Card get(int id) {
+    public Card findById(int id) {
         return cardRepository.findById(id).orElseThrow();
     }
 
