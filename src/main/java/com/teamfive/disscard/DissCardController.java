@@ -32,7 +32,12 @@ import java.util.List;
 public class DissCardController {
 
     private static final Logger log = LoggerFactory.getLogger(DissCardController.class);
+
     private final ICardService cardService;
+
+//    private final Logger log = LoggerFactory.getLogger(this.getClass());
+
+    // Constructor injection for better testability and immutability
 
     @Autowired
     public DissCardController(ICardService cardService) {
@@ -42,9 +47,11 @@ public class DissCardController {
     // ===== Front-end endpoints =====
 
     /**
+
      * Endpoint that generates the home page of the DissCard application's web UI.
      * @param model Object used to pass data to the Thymeleaf HTML template.
      * @return DissCard home page.
+     * Endpoint that generates the home page of the DissCard application's web UI
      */
     @GetMapping("/")
     public String index(Model model) {
@@ -63,25 +70,38 @@ public class DissCardController {
     @GetMapping(value = "/card/list", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public List<Card> fetchAllCards() {
-        log.info("Fetching all cards.");
-        return cardService.getAll();
+        try {
+            log.info("Fetching all cards.");
+            return cardService.getAll();
+        } catch (Exception e) {
+            log.info("Fetching all cards failed.");
+            log.error(e.getMessage());
+            return null;
+        }
     }
 
     /**
      * Fetches a card's info based on its ID.
      * @param id ID of a card registered with DissCard.
      * @return A ResponseEntity containing a JSON object representing a card.
+     * Fetches a card's info based on its ID
      */
     @GetMapping(value = "/card/info/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Card> fetchCardById(@PathVariable("id") int id) {
-        log.info("Fetching card with ID: {}", id);
-        Card fetchedCard = cardService.getById(id);
+        try {
+            log.info("Fetching card with ID: {}", id);
+            Card fetchedCard = cardService.getById(id);
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        return fetchedCard != null 
-            ? new ResponseEntity<>(fetchedCard, headers, HttpStatus.OK) 
-            : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            return fetchedCard != null
+                    ? new ResponseEntity<>(fetchedCard, headers, HttpStatus.OK)
+                    : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        catch (Exception ex) {
+            log.error("Error fetching card with ID: {}", id);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
@@ -92,8 +112,14 @@ public class DissCardController {
     @GetMapping(value = "/card/search/{keyword}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Card>> fetchCardsByKeyword(@PathVariable("keyword") String keyword) {
         log.info("Searching for cards with keyword: {}", keyword);
-        List<Card> fetchedCards = cardService.searchByName(keyword);
-        return buildResponse(fetchedCards);
+        List<Card> fetchedCardByKeyword = cardService.searchByName(keyword);
+
+        if (fetchedCardByKeyword == null || fetchedCardByKeyword.isEmpty()) {
+            log.info("No cards available: {}", keyword);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        return buildResponse(fetchedCardByKeyword);
     }
 
     /**
@@ -106,6 +132,7 @@ public class DissCardController {
         log.info("Adding new card: {}", card);
         try {
             Card newCard = cardService.save(card);
+            log.info("Card added successfully: {}", card);
             return buildResponse(newCard);
         } catch (Exception e) {
             log.error("Error adding card: {}", e.getMessage());
