@@ -10,6 +10,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.ResponseEntity;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +33,7 @@ public class DissCardControllerUnitTests {
         controller = dissCardController;
     }
 
-    // ===== Heavily-used methods =====
+    // ===== Frequently-used methods =====
 
     /**
      * Initialize controller and set up basic card service mock
@@ -61,7 +63,7 @@ public class DissCardControllerUnitTests {
 
         // Return card when getting card by ID
         logger.info("Setting service mock to return generated card when getting by id");
-        Mockito.when(cardService.getById(9)).thenReturn(card);
+        Mockito.when(cardService.getById(card.getId())).thenReturn(card);
 
         // Return list containing card when getting all cards
         logger.info("Setting service mock to return list containing generated card when getting all cards");
@@ -98,5 +100,28 @@ public class DissCardControllerUnitTests {
         logger.info("Checking that the data of the card in the list is accurate");
         Card cardInList = cardList.getFirst();
         assertEquals(cardInList, card);
+    }
+
+    /**
+     * Tests the fetchCardById method of the controller
+     * @throws Exception Could not initialize card service mock
+     */
+    @Test
+    public void fetchCardById_returnsOneCard() throws Exception {
+        givenCardServiceIsAvailable();
+        whenOneCardSavedToSystem();
+        Card fetchedCard = whenFetchingCardById();
+        thenReturnOneCard(fetchedCard);
+    }
+
+    private Card whenFetchingCardById() {
+        logger.info("Fetching card by id");
+        ResponseEntity<Card> response = controller.fetchCardById(card.getId());
+        return response.getBody();
+    }
+
+    private void thenReturnOneCard(Card fetchedCard) {
+        logger.info("Checking that the data of the returned card is accurate");
+        assertEquals(fetchedCard, card);
     }
 }
