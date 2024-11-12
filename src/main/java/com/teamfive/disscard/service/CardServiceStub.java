@@ -65,8 +65,6 @@ public class CardServiceStub implements ICardService {
     
 
     @Override
-
-
   public Card save(Card card) {
         try {
             Card savedCard = cardDAO.save(card);
@@ -79,6 +77,7 @@ public class CardServiceStub implements ICardService {
         } catch (Exception e) {
             System.err.println("Error saving card: " + e.getMessage());
           
+
             return null;
         }
     }
