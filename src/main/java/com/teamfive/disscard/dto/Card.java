@@ -20,39 +20,38 @@ public @Data class Card {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @SerializedName("id")
-    public int id;
-
+    private int id;
     /**
      * Name of card
      */
     @SerializedName("cardName")
-    public String cardName;
-
+    private String cardName;
     /**
      * String representing the series the card is from
      */
     @SerializedName("series")
-    public String series;
-
+    private String series;
     /**
      * Number measuring how many users have marked this card as a favorite
      */
     @SerializedName("favoritesNum")
-    public int favoritesNum;
-
+    private int favoritesNum;
     /**
      * String representing the average price of this card on the market
      */
     @SerializedName("marketAvg")
-    public String marketAvg;
-
+    private String marketAvg;
     /**
      * Number representing the number of users that own the card
      */
     @SerializedName("popularity")
-    public int popularity;
+    private int popularity;
 
-    public String ToString() {
-        return cardName + " (" + series + ")";
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(cardName).append(" (").append(series).append(")");
+        return sb.toString();
     }
 }
