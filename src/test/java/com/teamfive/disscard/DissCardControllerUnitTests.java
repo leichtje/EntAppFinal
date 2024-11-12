@@ -17,20 +17,21 @@ import java.util.List;
 
 /**
  * Class adding unit tests for the DissCardController class
+ * @author Danny Murray
  */
 @SpringBootTest
 public class DissCardControllerUnitTests {
 
     private Card card;
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private static final Logger logger = LoggerFactory.getLogger(DissCardControllerUnitTests.class);
     private final DissCardController controller;
 
     @MockBean
     private ICardService cardService;
 
     @Autowired
-    public DissCardControllerUnitTests(DissCardController dissCardController) {
-        controller = dissCardController;
+    public DissCardControllerUnitTests(DissCardController controller) {
+        this.controller = controller;
     }
 
     // ===== Frequently-used methods =====
@@ -40,7 +41,7 @@ public class DissCardControllerUnitTests {
      */
     private void givenCardServiceIsAvailable() {
         logger.info("Initializing card service mock");
-        // Initialize controller
+        // Set controller's card service to card service mock
         controller.cardService = cardService;
     }
 
@@ -91,6 +92,11 @@ public class DissCardControllerUnitTests {
         assertEquals(cardInList, card);
     }
 
+    private void thenReturnOneCard(Card fetchedCard) {
+        logger.info("Checking that the data of the returned card is accurate");
+        assertEquals(fetchedCard, card);
+    }
+
     // ===== Tests =====
 
     /**
@@ -124,11 +130,6 @@ public class DissCardControllerUnitTests {
         logger.info("Fetching card by id");
         ResponseEntity<Card> response = controller.fetchCardById(card.getId());
         return response.getBody();
-    }
-
-    private void thenReturnOneCard(Card fetchedCard) {
-        logger.info("Checking that the data of the returned card is accurate");
-        assertEquals(fetchedCard, card);
     }
 
     /**
