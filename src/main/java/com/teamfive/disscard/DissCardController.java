@@ -29,6 +29,7 @@ import java.util.List;
  *     the card service.
  * </p>
  */
+
 @Controller
 public class DissCardController {
 
@@ -36,7 +37,7 @@ public class DissCardController {
 
     private final ICardService cardService;
 
-//    private final Logger log = LoggerFactory.getLogger(this.getClass());
+    //private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     // Constructor injection for better testability and immutability
 
@@ -48,18 +49,19 @@ public class DissCardController {
     // ===== Front-end endpoints =====
 
     /**
-
      * Endpoint that generates the home page of the DissCard application's web UI.
      * @param model Object used to pass data to the Thymeleaf HTML template.
      * @return DissCard home page.
      * Endpoint that generates the home page of the DissCard application's web UI
      */
+
     @GetMapping("/")
     public String index(Model model) {
         // Add data to model for use in view here
         // Return name of HTML template
         return "home";
     }
+
     // ===== Back-end endpoints =====
     /**
      * Fetches a list of all cards registered with DissCard.
@@ -125,9 +127,7 @@ public class DissCardController {
         }
         return new ResponseEntity<>(fetchedCard, HttpStatus.OK);
     }
-
      */
-  
     @GetMapping(value = "/card/search/{keyword}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Card>> fetchCardsByKeyword(@PathVariable("keyword") String keyword) {
         log.info("Searching for cards with keyword: {}", keyword);
@@ -152,7 +152,6 @@ public class DissCardController {
         return new ResponseEntity<>(fetchedCards, HttpStatus.OK);
     }
      */
-  
     @PostMapping(value = "/card/add", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
      public ResponseEntity<Card> addCard(@RequestBody Card card) {
       
@@ -167,6 +166,11 @@ public class DissCardController {
         }
     }
 
+    /**
+     * Utility method to build a standardized ResponseEntity
+     * @return A ResponseEntity containing a body, header, and HttpStatus
+        return new ResponseEntity<>(body, headers, HttpStatus.OK);
+     */
     // Utility method to build a standardized ResponseEntity
     private <T> ResponseEntity<T> buildResponse(T body) {
         HttpHeaders headers = new HttpHeaders();
@@ -193,6 +197,8 @@ public class DissCardController {
 //            return new ResponseEntity<>(headers, HttpStatus.INTERNAL_SERVER_ERROR);
 //        }
 //        return new ResponseEntity<>(newCard, headers, HttpStatus.OK)
+
+
     }
 }
 
