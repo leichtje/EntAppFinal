@@ -64,18 +64,18 @@ public class DissCardController {
      * Fetches a list of all cards registered with DissCard.
      * @return A list of JSON objects representing cards.
      */
-    @GetMapping(value = "/card/list", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    public List<Card> fetchAllCards() {
-        try {
-            log.info("Fetching all cards.");
-            return cardService.getAll();
-        } catch (Exception e) {
-            log.info("Fetching all cards failed.");
-            log.error(e.getMessage());
-            return null;
-        }
-    }
+    //@GetMapping(value = "/card/list", produces = MediaType.APPLICATION_JSON_VALUE)
+    //@ResponseBody
+    //public List<Card> fetchAllCards() {
+    //    try {
+    //        log.info("Fetching all cards.");
+    //        return cardService.getAll();
+    //    } catch (Exception e) {
+    //        log.info("Fetching all cards failed.");
+    //        log.error(e.getMessage());
+    //        return null;
+    //    }
+    //}
 
     /**
      * Fetches a card's info based on its ID.
