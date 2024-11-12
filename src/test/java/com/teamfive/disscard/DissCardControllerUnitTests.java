@@ -37,21 +37,17 @@ public class DissCardControllerUnitTests {
 
     /**
      * Initialize controller and set up basic card service mock
-     * @throws Exception Could not initialize card service mock
      */
-    private void givenCardServiceIsAvailable() throws Exception {
+    private void givenCardServiceIsAvailable() {
         logger.info("Initializing card service mock");
-        // Set up mock of cardService
-        Mockito.when(cardService.save(card)).thenReturn(card);
         // Initialize controller
         controller.cardService = cardService;
     }
 
     /**
-     * Generate one card and save it to the card service mock
+     * Generate a new card
      */
-    private void whenOneCardSavedToSystem() {
-        // Generate Card
+    private void generateCard() {
         logger.info("Generating card");
         card = new Card();
         card.setId(9);
@@ -60,6 +56,14 @@ public class DissCardControllerUnitTests {
         card.setFavoritesNum(10000);
         card.setMarketAvg("$3,600");
         card.setPopularity(8000);
+    }
+
+    /**
+     * Generate one card and save it to the card service mock
+     */
+    private void whenOneCardSavedToSystem() {
+        // Generate Card
+        generateCard();
 
         // Return card when getting card by ID
         logger.info("Setting service mock to return generated card when getting by id");
@@ -91,10 +95,9 @@ public class DissCardControllerUnitTests {
 
     /**
      * Tests the fetchAllCards function of the controller
-     * @throws Exception Could not initialize card service mock
      */
     @Test
-    public void fetchAllCards_returnsListOfCards() throws Exception {
+    public void fetchAllCards_returnsListOfCards() {
         givenCardServiceIsAvailable();
         whenOneCardSavedToSystem();
         List<Card> cardList = whenFetchAllCards();
@@ -108,10 +111,9 @@ public class DissCardControllerUnitTests {
 
     /**
      * Tests the fetchCardById method of the controller
-     * @throws Exception Could not initialize card service mock
      */
     @Test
-    public void fetchCardById_returnsOneCard() throws Exception {
+    public void fetchCardById_returnsOneCard() {
         givenCardServiceIsAvailable();
         whenOneCardSavedToSystem();
         Card fetchedCard = whenFetchingCardById();
@@ -131,10 +133,9 @@ public class DissCardControllerUnitTests {
 
     /**
      * Tests fetchCardsByKeyword method of controller
-     * @throws Exception Could not initialize card service mock
      */
     @Test
-    public void fetchCardsByKeyword_returnsListOfCards() throws Exception {
+    public void fetchCardsByKeyword_returnsListOfCards() {
         givenCardServiceIsAvailable();
         whenOneCardSavedToSystem();
         List<Card> cardList = whenFetchingCardsByKeyword();
@@ -144,6 +145,31 @@ public class DissCardControllerUnitTests {
     private List<Card> whenFetchingCardsByKeyword() {
         logger.info("Fetching list of cards by keyword");
         ResponseEntity<List<Card>> response = controller.fetchCardsByKeyword(card.getCardName());
+        return response.getBody();
+    }
+
+    /**
+     * Tests the addCard method of the controller
+     * @throws Exception Unable to save card to system
+     */
+    @Test
+    public void addCard_returnsSavedCard() throws Exception {
+        givenCardServiceIsAvailable();
+        Card returnedCard = whenAddCardToSystem();
+        thenReturnOneCard(returnedCard);
+    }
+
+    private Card whenAddCardToSystem() throws Exception {
+        // Generate Card
+        generateCard();
+
+        // Return card when saving card
+        logger.info("Setting service mock to return generated card when saving generated card");
+        Mockito.when(cardService.save(card)).thenReturn(card);
+
+        // Add card through controller
+        logger.info("Adding card to system");
+        ResponseEntity<Card> response = controller.addCard(card);
         return response.getBody();
     }
 }
