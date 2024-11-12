@@ -110,10 +110,19 @@ public class DissCardController {
         Card newCard;
         try {
             newCard = cardService.save(card);
+
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return new ResponseEntity<>(newCard, HttpStatus.OK);
+
+            log.info("Card added successfully: {}", newCard);
+        }
+        catch (Exception e) {
+            log.error("Error while adding card: {}. Exception: {}", card, e.getMessage());
+            return new ResponseEntity<>(headers, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<>(newCard, headers, HttpStatus.OK)
     }
 }
