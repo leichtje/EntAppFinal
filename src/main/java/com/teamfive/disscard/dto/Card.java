@@ -41,7 +41,11 @@ public @Data class Card {
     @SerializedName("popularity")
     private int popularity;
 
-     public String toString() {
-        return cardName + " (" + series + ")";
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(cardName).append(" (").append(series).append(")");
+        return sb.toString();
     }
 }
