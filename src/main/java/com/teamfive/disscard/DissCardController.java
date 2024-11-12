@@ -56,10 +56,13 @@ public class DissCardController {
     @GetMapping("/")
     public String index(Model model) {
         // Add data to model for use in view here
+
         // Return name of HTML template
         return "home";
     }
+
     // ===== Back-end endpoints =====
+
     /**
      * Fetches a list of all cards registered with DissCard.
      * @return A list of JSON objects representing cards.
@@ -99,32 +102,13 @@ public class DissCardController {
             log.error("Error fetching card with ID: {}", id);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
-
-        //log.info("Fetching card with ID: {}", id);
-        //Card fetchedCard = cardService.getById(id);
-
-        //HttpHeaders headers = new HttpHeaders();
-        //headers.setContentType(MediaType.APPLICATION_JSON);
-        //return fetchedCard != null
-        //    ? new ResponseEntity<>(fetchedCard, headers, HttpStatus.OK)
-        //    : new ResponseEntity<>(HttpStatus.NOT_FOUND);
-
     }
 
     /**
      * Searches DissCard's systems for a list of cards that match the specified keyword.
      * @param keyword String used to filter cards.
      * @return A ResponseEntity containing a list of card JSON objects that match the specified keyword.
-     
-        if (fetchedCard == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(fetchedCard, HttpStatus.OK);
-    }
-
      */
-  
     @GetMapping(value = "/card/search/{keyword}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Card>> fetchCardsByKeyword(@PathVariable("keyword") String keyword) {
         log.info("Searching for cards with keyword: {}", keyword);
@@ -142,17 +126,9 @@ public class DissCardController {
      * Adds a card to DissCard's systems.
      * @param card Card to be added.
      * @return A ResponseEntity containing a JSON object representing the card that was added.
-
-        if (fetchedCards == null || fetchedCards.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(fetchedCards, HttpStatus.OK);
-    }
      */
-  
     @PostMapping(value = "/card/add", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
      public ResponseEntity<Card> addCard(@RequestBody Card card) {
-      
         log.info("Adding new card: {}", card);
         try {
             Card newCard = cardService.save(card);
@@ -164,32 +140,16 @@ public class DissCardController {
         }
     }
 
-    // Utility method to build a standardized ResponseEntity
+    /**
+     * Utility method to build a standardized ResponseEntity
+     * @param body Body of generated ResponseEntity
+     * @return Automatically generated ResponseEntity
+     * @param <T> Type of body
+     */
     private <T> ResponseEntity<T> buildResponse(T body) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         return new ResponseEntity<>(body, headers, HttpStatus.OK);
-
-
-//        try {
-//            Card newCard = null;
-//            Card card = null;
-//            newCard = cardService.save(card);
-//
-//
-//        } catch (Exception e) {
-//            log.error(e.getMessage(), e);
-//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//        return new ResponseEntity<>(newCard, HttpStatus.OK);
-//
-//            log.info("Card added successfully: {}", newCard);
-//        }
-//        catch (Exception e) {
-//            log.error("Error while adding card: {}. Exception: {}", card, e.getMessage());
-//            return new ResponseEntity<>(headers, HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//        return new ResponseEntity<>(newCard, headers, HttpStatus.OK)
     }
 }
 
