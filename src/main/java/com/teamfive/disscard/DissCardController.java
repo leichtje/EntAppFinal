@@ -4,6 +4,7 @@ import com.teamfive.disscard.dto.Card;
 import com.teamfive.disscard.service.ICardService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +35,7 @@ public class DissCardController {
 
     private final ICardService cardService;
 
-    private final Logger log = LoggerFactory.getLogger(this.getClass());
+//    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     // Constructor injection for better testability and immutability
 
@@ -51,8 +52,6 @@ public class DissCardController {
      * @param model Object used to pass data to the Thymeleaf HTML template.
      * @return DissCard home page.
      * Endpoint that generates the home page of the DissCard application's web UI
-     * @param model Object used to pass data to the Thymeleaf HTML template
-     * @return DissCard home page
      */
     @GetMapping("/")
     public String index(Model model) {
@@ -77,8 +76,6 @@ public class DissCardController {
      * @param id ID of a card registered with DissCard.
      * @return A ResponseEntity containing a JSON object representing a card.
      * Fetches a card's info based on its ID
-     * @param id ID of a card registered with DissCard
-     * @return A JSON object representing a card or 404 if not found
      */
     @GetMapping(value = "/card/info/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Card> fetchCardById(@PathVariable("id") int id) {
@@ -103,10 +100,7 @@ public class DissCardController {
         }
         return new ResponseEntity<>(fetchedCard, HttpStatus.OK);
     }
-    /**
-     * Searches DissCard's systems for a list of cards that match the specified keyword
-     * @param keyword String used to filter cards
-     * @return A list of card JSON objects that match the specified keyword or 404 if none found
+
      */
   
     @GetMapping(value = "/card/search/{keyword}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -126,15 +120,10 @@ public class DissCardController {
         }
         return new ResponseEntity<>(fetchedCards, HttpStatus.OK);
     }
-
-    /**
-     * Adds a card to DissCard's systems
-     * @param card Card to be added
-     * @return A JSON object representing the card that was added or an error response if saving fails
      */
   
     @PostMapping(value = "/card/add", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Card> addCard(@RequestBody Card card) {
+     public ResponseEntity<Card> addCard(@RequestBody Card card) {
       
         log.info("Adding new card: {}", card);
         try {
@@ -152,23 +141,26 @@ public class DissCardController {
         headers.setContentType(MediaType.APPLICATION_JSON);
         return new ResponseEntity<>(body, headers, HttpStatus.OK);
 
-        Card newCard;
-        try {
-            newCard = cardService.save(card);
 
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        return new ResponseEntity<>(newCard, HttpStatus.OK);
-
-            log.info("Card added successfully: {}", newCard);
-        }
-        catch (Exception e) {
-            log.error("Error while adding card: {}. Exception: {}", card, e.getMessage());
-            return new ResponseEntity<>(headers, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        return new ResponseEntity<>(newCard, headers, HttpStatus.OK)
+//        try {
+//            Card newCard = null;
+//            Card card = null;
+//            newCard = cardService.save(card);
+//
+//
+//        } catch (Exception e) {
+//            log.error(e.getMessage(), e);
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//        return new ResponseEntity<>(newCard, HttpStatus.OK);
+//
+//            log.info("Card added successfully: {}", newCard);
+//        }
+//        catch (Exception e) {
+//            log.error("Error while adding card: {}. Exception: {}", card, e.getMessage());
+//            return new ResponseEntity<>(headers, HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//        return new ResponseEntity<>(newCard, headers, HttpStatus.OK)
     }
 }
 
