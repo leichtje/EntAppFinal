@@ -2,38 +2,55 @@ package com.teamfive.disscard;
 
 import com.teamfive.disscard.dto.Card;
 import com.teamfive.disscard.service.ICardService;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
-
 import org.mockito.Mockito;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class adding unit tests for the DissCardController class
+ */
 @SpringBootTest
 public class DissCardControllerUnitTests {
-    private DissCardController controller;
+
     private Card card;
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final DissCardController controller;
 
     @MockBean
     private ICardService cardService;
 
+    @Autowired
+    public DissCardControllerUnitTests(DissCardController dissCardController) {
+        controller = dissCardController;
+    }
+
     // ===== Heavily-used methods =====
 
+    /**
+     * Initialize controller and set up basic card service mock
+     * @throws Exception Could not initialize card service mock
+     */
     private void givenCardServiceIsAvailable() throws Exception {
+        logger.info("Initializing card service mock");
         // Set up mock of cardService
         Mockito.when(cardService.save(card)).thenReturn(card);
         // Initialize controller
-        controller = new DissCardController();
         controller.cardService = cardService;
     }
 
+    /**
+     * Generate one card and save it to the card service mock
+     */
     private void whenOneCardSavedToSystem() {
         // Generate Card
+        logger.info("Generating card");
         card = new Card();
         card.setId(9);
         card.setCardName("Charizard");
@@ -43,9 +60,11 @@ public class DissCardControllerUnitTests {
         card.setPopularity(8000);
 
         // Return card when getting card by ID
+        logger.info("Setting service mock to return generated card when getting by id");
         Mockito.when(cardService.getById(9)).thenReturn(card);
 
         // Return list containing card when getting all cards
+        logger.info("Setting service mock to return list containing generated card when getting all cards");
         List<Card> cardList = new ArrayList<>();
         cardList.add(card);
         Mockito.when(cardService.getAll()).thenReturn(cardList);
@@ -53,27 +72,30 @@ public class DissCardControllerUnitTests {
 
     // ===== Tests =====
 
+    /**
+     * Tests the fetchAllCards function of the controller
+     * @throws Exception Could not initialize card service mock
+     */
     @Test
     public void fetchAllCards_returnsListOfCards() throws Exception {
-        // Given card service and controller are initialized
         givenCardServiceIsAvailable();
-        // When one card is saved to system
         whenOneCardSavedToSystem();
-        // When fetching list of all cards
         List<Card> cardList = whenFetchAllCards();
-        // Then return list of cards containing one card.
         thenReturnListContainingOneCard(cardList);
     }
 
     private List<Card> whenFetchAllCards() {
+        logger.info("Fetching list of all cards");
         return controller.fetchAllCards();
     }
 
     private void thenReturnListContainingOneCard(List<Card> cardList) {
         // Check that list contains 1 card
+        logger.info("Checking that card list only contains one card");
         assertEquals(cardList.size(), 1);
 
         // Check values of card in list
+        logger.info("Checking that the data of the card in the list is accurate");
         Card cardInList = cardList.getFirst();
         assertEquals(cardInList, card);
     }
