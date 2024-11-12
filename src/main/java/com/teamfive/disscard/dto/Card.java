@@ -21,26 +21,31 @@ public @Data class Card {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @SerializedName("id")
     private int id;
+
     /**
      * Name of card
      */
     @SerializedName("cardName")
     private String cardName;
+
     /**
      * String representing the series the card is from
      */
     @SerializedName("series")
     private String series;
+
     /**
      * Number measuring how many users have marked this card as a favorite
      */
     @SerializedName("favoritesNum")
     private int favoritesNum;
+
     /**
      * String representing the average price of this card on the market
      */
     @SerializedName("marketAvg")
     private String marketAvg;
+
     /**
      * Number representing the number of users that own the card
      */
