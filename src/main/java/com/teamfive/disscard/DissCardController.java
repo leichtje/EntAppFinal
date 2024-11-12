@@ -84,7 +84,13 @@ public class DissCardController {
     public ResponseEntity<Card> fetchCardById(@PathVariable("id") int id) {
         log.info("Fetching card with ID: {}", id);
         Card fetchedCard = cardService.getById(id);
-        return buildResponse(fetchedCard);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        return fetchedCard != null 
+            ? new ResponseEntity<>(fetchedCard, headers, HttpStatus.OK) 
+            : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
     }
 
     /**
