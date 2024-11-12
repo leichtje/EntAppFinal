@@ -24,15 +24,10 @@ public class DissCardControllerUnitTests {
 
     private Card card;
     private static final Logger logger = LoggerFactory.getLogger(DissCardControllerUnitTests.class);
-    private final DissCardController controller;
+    private DissCardController controller;
 
     @MockBean
     private ICardService cardService;
-
-    @Autowired
-    public DissCardControllerUnitTests(DissCardController controller) {
-        this.controller = controller;
-    }
 
     // ===== Frequently-used methods =====
 
@@ -40,9 +35,9 @@ public class DissCardControllerUnitTests {
      * Initialize controller and set up basic card service mock
      */
     private void givenCardServiceIsAvailable() {
-        logger.info("Initializing card service mock");
+        logger.info("Initializing controller and card service mock");
         // Set controller's card service to card service mock
-        controller.cardService = cardService;
+        controller = new DissCardController(cardService);
     }
 
     /**
