@@ -3,6 +3,7 @@ package com.teamfive.disscard;
 import com.teamfive.disscard.dto.Card;
 import com.teamfive.disscard.service.ICardService;
 
+import okhttp3.internal.concurrent.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -84,6 +85,7 @@ public class DissCardController {
      * Fetches a card's info based on its ID
      */
     @GetMapping(value = "/card/info/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    // Better to add a try and catch block here
     public ResponseEntity<Card> fetchCardById(@PathVariable("id") int id) {
         try {
             log.info("Fetching card with ID: {}", id);
