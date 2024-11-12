@@ -2,6 +2,7 @@ package com.teamfive.disscard.service;
 
 import com.teamfive.disscard.dao.ICardDAO;
 import com.teamfive.disscard.dto.Card;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,6 +14,7 @@ public class CardService implements ICardService {
 
     public CardService() {}
 
+    @Autowired
     public CardService(ICardDAO cardDAO) {
         this.cardDAO = cardDAO;
     }

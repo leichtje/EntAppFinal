@@ -10,8 +10,14 @@ import java.util.List;
 @Repository
 public class CardDAO implements ICardDAO {
 
-    @Autowired
     CardRepository cardRepository;
+
+    public CardDAO() {}
+
+    @Autowired
+    public CardDAO(CardRepository cardRepository) {
+        this.cardRepository = cardRepository;
+    }
 
     @Override
     public Card save(Card card) throws Exception {
