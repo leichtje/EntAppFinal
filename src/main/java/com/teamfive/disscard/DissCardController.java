@@ -167,6 +167,27 @@ public class DissCardController {
     }
 
     /**
+     * Deletes a card from DissCard's systems.
+     * @param card Card to be deleted.
+     * @return A ResponseEntity containing a JSON object representing the card that was deleted.
+     * {
+     *     return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+     * }
+     */
+    @PostMapping(value = "/card/delete", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Card> deleteCard(@RequestBody Card card) {
+        try{
+            log.info("Deleting card: {}", card);
+            Card deleteCard = cardService.delete(card);
+            log.info("Card deleted successfully: {}", card);
+            return buildResponse(deleteCard);
+        } catch (Exception ex){
+            log.error("Error deleting card: {}", ex.getMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
      * Utility method to build a standardized ResponseEntity
      * @return A ResponseEntity containing a body, header, and HttpStatus
         return new ResponseEntity<>(body, headers, HttpStatus.OK);

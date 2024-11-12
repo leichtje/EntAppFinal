@@ -31,4 +31,11 @@ public interface ICardService {
      * @return The card that was saved.
      */
     Card save(Card card) throws Exception;
+
+    /**
+     * Deletes the card from storage.
+     * @param card The card you wish to delete.
+     * @return The card that was deleted.
+    */
+    Card delete(Card card) throws Exception;
 }
