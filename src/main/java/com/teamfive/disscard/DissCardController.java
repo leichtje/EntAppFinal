@@ -60,6 +60,31 @@ public class DissCardController {
         // Return name of HTML template
         return "home";
     }
+    @GetMapping("/ExpensiveCards")
+    public String expensiveCards() {
+
+        // Add data to model for use in view here
+
+        // Return name of HTML template
+        return "ExpensiveCards";
+    }
+    @GetMapping("/PopularCards")
+    public String PopularCards() {
+
+        // Add data to model for use in view here
+
+        // Return name of HTML template
+        return "PopularCards";
+    }
+    @GetMapping("/MyCards")
+    public String MyCards() {
+
+        // Add data to model for use in view here
+
+        // Return name of HTML template
+        return "MyCards";
+    }
+
 
     // ===== Back-end endpoints =====
 
