@@ -14,16 +14,16 @@
 <div style="background-color: #1e2441; color: white">
     <h3>Expensive Finds</h3>
     <div th:each="cards : ${card}">
-
+        <a th:href="@{'/card/info/' + ${cards.id} + '/'}" class="list-group-item list-group-item-action">
         <div class="card h-100">
-            <img src="https://example.com/img/sample.jpg" class="card-img-top" th:alt="${card.name}">
+            <img src="https://example.com/img/sample.jpg" class="card-img-top" th:alt="${card.cardName}">
             <div class="card-body">
                 <h5 th:text="${cards.cardName}"></h5>
                 <p th:text="${cards.series}"></p>
                 <p th:text="${cards.marketAvg}"></p>
             </div>
         </div>
-
+        </a>
 
     </div>
 </div>

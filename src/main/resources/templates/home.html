@@ -27,7 +27,7 @@
         <a th:href="@{'/card/info/' + ${cards.id} + '/'}" class="list-group-item list-group-item-action">
             <div class="col">
                 <div class="card h-100">
-                    <img src="https://example.com/img/sample.jpg" class="card-img-top" th:alt="${cards.name}">
+                    <img src="https://example.com/img/sample.jpg" class="card-img-top" th:alt="${cards.cardName}">
                     <h5 th:text="${cards.cardName}"></h5>
                     <p th:text="${cards.series}"></p>
                     <p th:text="${cards.favoritesNum}"></p>
