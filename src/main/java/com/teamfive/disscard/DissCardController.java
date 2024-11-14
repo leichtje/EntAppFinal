@@ -56,10 +56,42 @@ public class DissCardController {
     @GetMapping("/")
     public String index(Model model) {
         // Add data to model for use in view here
-
+        Card card = new Card();
+        card.setId(1);
+        card.setCardName("Pikachu");
+        card.setPopularity(9500);
+        card.setSeries("pokemon");
+        card.setMarketAvg("$2,500");
+        card.setFavoritesNum(20);
+        model.addAttribute(card);
         // Return name of HTML template
         return "home";
     }
+    @GetMapping("/ExpensiveCards")
+    public String expensiveCards() {
+
+        // Add data to model for use in view here
+
+        // Return name of HTML template
+        return "ExpensiveCards";
+    }
+    @GetMapping("/PopularCards")
+    public String PopularCards() {
+
+        // Add data to model for use in view here
+
+        // Return name of HTML template
+        return "PopularCards";
+    }
+    @GetMapping("/MyCards")
+    public String MyCards() {
+
+        // Add data to model for use in view here
+
+        // Return name of HTML template
+        return "MyCards";
+    }
+
 
     // ===== Back-end endpoints =====
 

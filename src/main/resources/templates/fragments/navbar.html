@@ -2,26 +2,26 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="navbar">
     <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #4d79ff;">
-        <a class="navbar-brand" href="#">Navbar</a>
+
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item active">
-                    <a class="nav-link" href="src/main/resources/templates/home.html">Home <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="../home.html" th:href="@{/}">Home </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="src/main/resources/templates/MyCards.html">My Cards</a>
+                    <a class="nav-link" href="../MyCards.html" th:href="@{/MyCards}">My Cards</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Popular Cards</a>
+                    <a class="nav-link" href="../PopularCards.html" th:href="@{/PopularCards}">Popular Cards</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Expensive Cards</a>
+                    <a class="nav-link" href="../ExpensiveCards.html" th:href="@{/ExpensiveCards}">Expensive Cards</a>
                 </li>
                 <li class="nav-item align-content-end">
-                    <a class="nav-link" href="src/main/resources/templates/AccountInfo.html">
+                    <a class="nav-link" href="#">
                         <i class="bi bi-person"></i>
                     </a>
                 </li>
