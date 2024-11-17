@@ -14,14 +14,14 @@
     <h3>My Finds</h3>
     <div th:each="card : ${cards}">
         <a th:href="@{'/card/info/' + ${cards.id} + '/'}" class="list-group-item list-group-item-action">
-        <div class="card h-100">
-            <img src="https://example.com/img/sample.jpg" class="card-img-top" th:alt="${card.cardName}">
-            <div class="card-body">
-                <h5 th:text="${card.cardName}"></h5>
-                <p th:text="${card.series}"></p>
-                <p th:text="${card.marketAvg}"></p>
+            <div class="card h-100">
+                <img src="https://example.com/img/sample.jpg" class="card-img-top" th:alt="${card.cardName}">
+                <div class="card-body">
+                    <h5 th:text="${card.cardName}"></h5>
+                    <p th:text="${card.series}"></p>
+                    <p th:text="${card.marketAvg}"></p>
+                </div>
             </div>
-        </div>
         </a>
 
 
