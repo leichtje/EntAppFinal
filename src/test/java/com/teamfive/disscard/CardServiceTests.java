@@ -2,6 +2,7 @@ package com.teamfive.disscard;
 
 import com.teamfive.disscard.dao.ICardDAO;
 import com.teamfive.disscard.dto.Card;
+import com.teamfive.disscard.helper.TestingUtils;
 import com.teamfive.disscard.service.CardServiceStub;
 import com.teamfive.disscard.service.ICardService;
 import org.junit.jupiter.api.Test;
@@ -84,11 +85,7 @@ class CardServiceTests {
 
     private void whenSearchCardByNameUsingKeywordChari() {
         cards = cardService.searchByName("Chari");
-
-        card.setId(9);
-        card.setCardName("Charizard");
-        card.setPopularity(8000);
-        card.setMarketAvg("$3,600");
+        card = TestingUtils.generateCharizardCard();
     }
 
     private void thenReturnListContainingCharizard() {

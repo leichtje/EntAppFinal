@@ -2,6 +2,7 @@ package com.teamfive.disscard.service;
 
 import com.teamfive.disscard.dao.ICardDAO;
 import com.teamfive.disscard.dto.Card;
+import com.teamfive.disscard.helper.TestingUtils;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -21,12 +22,7 @@ public class CardServiceStub implements ICardService {
     @Override
     public Card getById(int id) {
         if (id == 9) {
-            Card card = new Card();
-            card.setId(9);
-            card.setCardName("Charizard");
-            card.setPopularity(8000);
-            card.setMarketAvg("$3,600");
-            return card;
+            return TestingUtils.generateCharizardCard();
         } else {
             return null;
         }
@@ -42,11 +38,7 @@ public class CardServiceStub implements ICardService {
     @Override
     public List<Card> searchByName(String keyword) {
         if (keyword.equals("Chari")) {
-            Card card = new Card();
-            card.setId(9);
-            card.setCardName("Charizard");
-            card.setPopularity(8000);
-            card.setMarketAvg("$3,600");
+            Card card = TestingUtils.generateCharizardCard();
     
             List<Card> searchResults = new ArrayList<>();
             searchResults.add(card);
