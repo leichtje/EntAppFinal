@@ -37,7 +37,6 @@ public class CardService implements ICardService {
                 return foundCard;
             }
         }
-
     }
 
     @Override
@@ -64,7 +63,7 @@ public class CardService implements ICardService {
      * @param card The card to check for validity.
      * @return True if the card is valid, false if not.
      */
-    private boolean isValidCard(Card card) {
+    private static boolean isValidCard(Card card) {
 
         boolean isValid = true;
 

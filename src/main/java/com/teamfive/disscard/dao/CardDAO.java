@@ -41,6 +41,7 @@ public class CardDAO implements ICardDAO {
 
     @Override
     public Card findById(int id) {
+
         Optional<Card> card = cardRepository.findById(id);
 
         if (card.isPresent()) {
