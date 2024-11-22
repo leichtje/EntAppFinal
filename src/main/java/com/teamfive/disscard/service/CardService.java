@@ -21,7 +21,15 @@ public class CardService implements ICardService {
 
     @Override
     public Card getById(int id) {
-        return cardDAO.findById(id);
+
+        Card foundCard = cardDAO.findById(id);
+
+        // ID of card can't be zero or lower
+        if (foundCard.getId() <= 0) {
+            return null;
+        } else {
+            return foundCard;
+        }
     }
 
     @Override
