@@ -57,8 +57,10 @@ class CardServiceTests {
     private void thenReturnCharizardCardDataForId9() {
         System.out.println("Checking if the returned card is Charizard");
         assertEquals("Charizard", card.getCardName());
-        assertEquals(8000, card.getPopularity());
+        assertEquals("Pokemon", card.getSeries());
+        assertEquals(10000, card.getFavoritesNum());
         assertEquals("$3,600", card.getMarketAvg());
+        assertEquals(8000, card.getPopularity());
     }
 
     @Test
@@ -105,8 +107,10 @@ class CardServiceTests {
 
     private void whenBlastoiseCardDataUploadedWithValidFields() {
         card.setCardName("Blastoise");
-        card.setPopularity(12000);
+        card.setSeries("Pokemon");
+        card.setFavoritesNum(800);
         card.setMarketAvg("$2,000");
+        card.setPopularity(12000);
     }
 
     private void thenCreateBlastoiseCardAndReturnSuccessfulResponse() throws Exception {
@@ -124,8 +128,10 @@ class CardServiceTests {
 
     private void whenCardDataUploadedWithEmptyName() {
         card.setCardName("");
-        card.setPopularity(12000);
+        card.setSeries("Pokemon");
+        card.setFavoritesNum(800);
         card.setMarketAvg("$2,000");
+        card.setPopularity(12000);
     }
 
     private void thenReturnBlankNameIsInvalid() throws Exception {
