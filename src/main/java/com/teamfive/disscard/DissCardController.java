@@ -1,6 +1,8 @@
 package com.teamfive.disscard;
 
+import com.teamfive.disscard.dao.CardDAO;
 import com.teamfive.disscard.dto.Card;
+import com.teamfive.disscard.service.CardService;
 import com.teamfive.disscard.service.ICardService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -35,6 +38,7 @@ public class DissCardController {
 
     private final ICardService cardService;
 
+
 //    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     // Constructor injection for better testability and immutability
@@ -44,6 +48,7 @@ public class DissCardController {
         this.cardService = cardService;
     }
 
+    private List<Card> allCards;
     // ===== Front-end endpoints =====
 
     /**
@@ -84,13 +89,25 @@ public class DissCardController {
         return "PopularCards";
     }
     @GetMapping("/MyCards")
-    public String MyCards() {
-
+    public ModelAndView MyCards() {
         // Add data to model for use in view here
-
+            ModelAndView modelAndView = new ModelAndView();
+            try {
+                Iterable<Card> allCards;
+                allCards = fetchAllCards();
+                modelAndView.setViewName("MyCards");
+                modelAndView.addObject("allCards", allCards);
+            } catch (Exception e) {
+                e.printStackTrace();
+                log.error("Unable to retrieve cards", e);
+                modelAndView.setViewName("Error");
+            }
+            return modelAndView;
         // Return name of HTML template
-        return "MyCards";
+
     }
+
+
 
 
     // ===== Back-end endpoints =====
