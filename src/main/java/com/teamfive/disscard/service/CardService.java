@@ -58,6 +58,11 @@ public class CardService implements ICardService {
         }
     }
 
+    @Override
+    public void delete(int id) {
+        cardDAO.delete(id);
+    }
+
     /**
      * Used to determine if a card and it's values are valid.
      * @param card The card to check for validity.
