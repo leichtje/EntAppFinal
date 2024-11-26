@@ -7,18 +7,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.teamfive.disscard.helper.TestingUtils.*;
-
 public class CardDAOStub implements ICardDAO {
 
     // Represents all the cards stored in the database
-    private Map<Integer, Card> cardDataStore = new HashMap<>();
-
-    public CardDAOStub() {
-        // Adds cards to fake database so stub can be used for testing
-        Card charizard = generateCharizardCard();
-        cardDataStore.put(charizard.getId(), charizard);
-    }
+    private final Map<Integer, Card> cardDataStore = new HashMap<>();
 
     @Override
     public Card save(Card card) throws Exception {

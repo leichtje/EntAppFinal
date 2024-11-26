@@ -1,41 +1,50 @@
 package com.teamfive.disscard;
 
-import com.teamfive.disscard.dao.CardDAOStub;
+import com.teamfive.disscard.dao.CardDAO;
 import com.teamfive.disscard.dao.CardRepository;
 import com.teamfive.disscard.dao.ICardDAO;
 import com.teamfive.disscard.dto.Card;
+import com.teamfive.disscard.helper.TestingUtils;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.assertj.core.api.Assertions.assertThatException;
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 public class CardDAOTests {
 
-    @Autowired
+    //@Autowired
     ICardDAO cardDAO;
-    Card card = new Card();
+    Card card;
+    // Used to compare card submitted to be saved and the card returned after saving.
+    Card savedCard;
 
     @Mock
     CardRepository cardRepository;
 
     @Test
-    void receiveId9_returnCharizardCard() throws Exception {
+    void receiveId9_returnCharizardCard() {
         givenCardRepositoryAvailable();
+        whenCard9AddedIsCharizard();
         whenFindCardById9();
         thenReturnCharizardCard();
     }
 
-    private void givenCardRepositoryAvailable() throws Exception {
-        when(cardRepository.save(card)).thenReturn(card);
-        cardDAO = new CardDAOStub();
+    private void givenCardRepositoryAvailable() {
+        cardDAO = new CardDAO(cardRepository);
     }
 
-    private void whenFindCardById9() throws Exception {
+    private void whenCard9AddedIsCharizard() {
+        Card charizard = TestingUtils.generateCharizardCard();
+        Mockito.when(cardRepository.findById(9)).thenReturn(Optional.of(charizard));
+    }
+
+    private void whenFindCardById9() {
         card = cardDAO.findById(9);
     }
 
@@ -48,13 +57,13 @@ public class CardDAOTests {
     }
 
     @Test
-    void receiveNonExistentId_returnId0Card() throws Exception {
+    void receiveNonExistentId_returnId0Card() {
         givenCardRepositoryAvailable();
         whenFindCardByNonExistentId();
         thenReturnCardWithId0();
     }
 
-    private void whenFindCardByNonExistentId() throws Exception {
+    private void whenFindCardByNonExistentId() {
         card = cardDAO.findById(-1);
     }
 
@@ -62,4 +71,25 @@ public class CardDAOTests {
         assertEquals(0, card.getId());
     }
 
+    @Test
+    void saveCard_returnSavedBlastoiseCard() throws Exception {
+        givenCardRepositoryAvailable();
+        whenBlastoiseCardSaved();
+        thenReturnSavedBlastoiseCard();
+    }
+
+    private void whenBlastoiseCardSaved() throws Exception {
+        card = TestingUtils.generateBlastoiseCard();
+        when(cardRepository.save(card)).thenReturn(card);
+        savedCard = cardDAO.save(card);
+        verify(cardRepository, atLeastOnce()).save(card);
+    }
+
+    private void thenReturnSavedBlastoiseCard() {
+        assertEquals(card.getCardName(), savedCard.getCardName());
+        assertEquals(card.getSeries(), savedCard.getSeries());
+        assertEquals(card.getFavoritesNum(), savedCard.getFavoritesNum());
+        assertEquals(card.getMarketAvg(), savedCard.getMarketAvg());
+        assertEquals(card.getPopularity(), savedCard.getPopularity());
+    }
 }

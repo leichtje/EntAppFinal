@@ -106,11 +106,7 @@ class CardServiceTests {
     }
 
     private void whenBlastoiseCardDataUploadedWithValidFields() {
-        card.setCardName("Blastoise");
-        card.setSeries("Pokemon");
-        card.setFavoritesNum(800);
-        card.setMarketAvg("$2,000");
-        card.setPopularity(12000);
+        card = TestingUtils.generateBlastoiseCard();
     }
 
     private void thenCreateBlastoiseCardAndReturnSuccessfulResponse() throws Exception {
@@ -127,11 +123,8 @@ class CardServiceTests {
     }
 
     private void whenCardDataUploadedWithEmptyName() {
+        card = TestingUtils.generateBlastoiseCard();
         card.setCardName("");
-        card.setSeries("Pokemon");
-        card.setFavoritesNum(800);
-        card.setMarketAvg("$2,000");
-        card.setPopularity(12000);
     }
 
     private void thenReturnBlankNameIsInvalid() throws Exception {
