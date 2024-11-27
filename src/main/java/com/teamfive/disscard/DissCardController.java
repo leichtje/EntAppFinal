@@ -128,8 +128,20 @@ public class DissCardController {
         // Return name of HTML template
         return "CardInfo";
     }
+//searching for card
+    @GetMapping("/card/search/{keyword}")
+    public String searchCards(@RequestParam(value="keyword", required=false, defaultValue="None")  String keyword, Model model) {
+        try {
+            List<Card> cards = cardService.searchByName(keyword);
+            model.addAttribute("allCards", cards);
+            return "MyCards";
+        } catch (Exception e) {
+            log.info("Search for cards failed");
+            log.error(e.getMessage());
+            return "error";
+        }
 
-
+    }
     // ===== Back-end endpoints =====
 
     /**
@@ -172,6 +184,7 @@ public class DissCardController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 
     /**
      * Searches DissCard's systems for a list of cards that match the specified keyword.
