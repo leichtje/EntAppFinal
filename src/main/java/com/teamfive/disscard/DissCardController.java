@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -61,14 +62,7 @@ public class DissCardController {
     @GetMapping("/")
     public String index(Model model) {
         // Add data to model for use in view here
-        Card card = new Card();
-        card.setId(1);
-        card.setCardName("Pikachu");
-        card.setPopularity(9500);
-        card.setSeries("pokemon");
-        card.setMarketAvg("$2,500");
-        card.setFavoritesNum(20);
-        model.addAttribute(card);
+
         // Return name of HTML template
         return "home";
     }
@@ -107,7 +101,18 @@ public class DissCardController {
 
     }
 
-
+    /**
+     * presents page of a singular card's details
+     */
+    @GetMapping( "/card/info/{id}/")
+    public String CardInfo(@PathVariable("id") int id, Model model) {
+        // Add data to model for use in view here
+       Card card = new Card();
+       card = cardService.getById(id);
+       model.addAttribute("card", card);
+        // Return name of HTML template
+        return "CardInfo";
+    }
 
 
     // ===== Back-end endpoints =====
