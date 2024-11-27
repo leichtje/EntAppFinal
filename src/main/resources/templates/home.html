@@ -23,17 +23,20 @@
 <div style="background-color: #1e2441; color: white">
 <h3>Our Finds</h3>
     <div class="row row-cols-1 row-cols-md-5 g-4">
-    <div th:each="cards: ${card}" th:for="${cards.id} < 6">
-        <a th:href="@{'/card/info/' + ${cards.id} + '/'}" class="list-group-item list-group-item-action">
-            <div class="col">
-                <div class="card h-100">
-                    <img src="https://example.com/img/sample.jpg" class="card-img-top" th:alt="${cards.cardName}">
-                    <h5 th:text="${cards.cardName}"></h5>
-                    <p th:text="${cards.series}"></p>
-                    <p th:text="${cards.favoritesNum}"></p>
+    <div th:each="cards: ${topCards}">
+
+
+            <a th:href="@{'/card/info/' + ${cards.id} + '/'}" class="list-group-item list-group-item-action">
+                <div class="col">
+                    <div class="card h-100">
+                        <img src="https://example.com/img/sample.jpg" class="card-img-top" th:alt="${cards.cardName}">
+                        <h5 th:text="${cards.cardName}"></h5>
+                        <p th:text="${cards.series}"></p>
+                        <p th:text="'Favorites: ' + ${cards.favoritesNum}"></p>
+                    </div>
                 </div>
-            </div>
-        </a>
+            </a>
+
 
     </div>
 

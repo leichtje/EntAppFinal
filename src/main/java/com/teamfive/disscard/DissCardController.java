@@ -1,8 +1,6 @@
 package com.teamfive.disscard;
 
-import com.teamfive.disscard.dao.CardDAO;
 import com.teamfive.disscard.dto.Card;
-import com.teamfive.disscard.service.CardService;
 import com.teamfive.disscard.service.ICardService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -53,8 +51,8 @@ public class DissCardController {
     // ===== Front-end endpoints =====
 
     /**
-
      * Endpoint that generates the home page of the DissCard application's web UI.
+     *
      * @param model Object used to pass data to the Thymeleaf HTML template.
      * @return DissCard home page.
      * Endpoint that generates the home page of the DissCard application's web UI
@@ -63,8 +61,25 @@ public class DissCardController {
     public String index(Model model) {
         // Add data to model for use in view here
 
-        // Return name of HTML template
-        return "home";
+        Card card;
+        List<Card> topCards = new ArrayList<>() ;
+        int id;
+        String returnValue = "home";
+        try {
+            for (id = 1; id < 6; id++){
+                card = cardService.getById(id);
+                topCards.add(card);
+                model.addAttribute("topCards", topCards);
+
+                // Return name of HTML template
+                returnValue = "home";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("Unable to retrieve cards", e);
+            returnValue = "error";
+        }
+        return returnValue;
     }
     @GetMapping("/ExpensiveCards")
     public String expensiveCards() {
@@ -113,8 +128,20 @@ public class DissCardController {
         // Return name of HTML template
         return "CardInfo";
     }
+//searching for card
+    @GetMapping("/card/search/{keyword}")
+    public String searchCards(@RequestParam(value="keyword", required=false, defaultValue="None")  String keyword, Model model) {
+        try {
+            List<Card> cards = cardService.searchByName(keyword);
+            model.addAttribute("allCards", cards);
+            return "MyCards";
+        } catch (Exception e) {
+            log.info("Search for cards failed");
+            log.error(e.getMessage());
+            return "error";
+        }
 
-
+    }
     // ===== Back-end endpoints =====
 
     /**
@@ -157,6 +184,7 @@ public class DissCardController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 
     /**
      * Searches DissCard's systems for a list of cards that match the specified keyword.
