@@ -69,7 +69,6 @@ public class CardServiceStub implements ICardService {
             }
         } catch (Exception e) {
             System.err.println("Error saving card: " + e.getMessage());
-          
 
             return null;
         }
