@@ -62,7 +62,7 @@ public class DissCardController {
     @RequestMapping(value="/start", method=RequestMethod.GET, headers={"content-type=text/json"})
     @ResponseBody
     public Card readJSON(Model model) {
-        Card Card = fetchCardById(1).getBody();
+        Card Card = cardService.getById(1);
         model.addAttribute("Card", Card);
         return Card;
     }
@@ -104,7 +104,7 @@ public class DissCardController {
         ModelAndView modelAndView = new ModelAndView();
         try {
             Iterable<Card> allCards;
-            allCards = fetchAllCards();
+            allCards = cardService.getAll();
             modelAndView.setViewName("MyCards");
             modelAndView.addObject("allCards", allCards);
         } catch (Exception e) {
@@ -122,7 +122,7 @@ public class DissCardController {
         ModelAndView modelAndView = new ModelAndView();
         try {
             Iterable<Card> allCards;
-            allCards = fetchAllCards();
+            allCards = cardService.getAll();
             modelAndView.setViewName("MyCards");
             modelAndView.addObject("allCards", allCards);
         } catch (Exception e) {
@@ -140,7 +140,7 @@ public class DissCardController {
         ModelAndView modelAndView = new ModelAndView();
         try {
             Iterable<Card> allCards;
-            allCards = fetchAllCards();
+            allCards = cardService.getAll();
             modelAndView.setViewName("MyCards");
             modelAndView.addObject("allCards", allCards);
         } catch (Exception e) {
@@ -182,29 +182,33 @@ public class DissCardController {
 
     /**
      * Fetches a list of all cards registered with DissCard.
-     * @return A list of JSON objects representing cards.
+     * @return <div>
+     *     <div>ResponseEntity&lt;List&lt;Card&gt;&gt; - A list of JSON objects representing cards.</div>
+     *     <div>ResponseEntity&lt;String&gt; - A ResponseEntity containing an error message, if one occurred</div>
+     * </div>
      */
-    @GetMapping(value = "/card/list", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    public List<Card> fetchAllCards() {
+    @GetMapping(value = "/api/card/list", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> fetchAllCards() {
         try {
             log.info("Fetching all cards.");
-            return cardService.getAll();
+            List<Card> cardList = cardService.getAll();
+            return buildResponse(cardList);
         } catch (Exception e) {
-            log.info("Fetching all cards failed.");
-            log.error(e.getMessage());
-            return null;
+            log.error("Fetching all cards failed: {}", e.getMessage());
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     /**
      * Fetches a card's info based on its ID.
      * @param id ID of a card registered with DissCard.
-     * @return A ResponseEntity containing a JSON object representing a card.
-     * Fetches a card's info based on its ID
+     * @return <div>
+     *     <div>ResponseEntity&lt;Card&gt; - A ResponseEntity containing a JSON object representing a card.</div>
+     *     <div>ResponseEntity&lt;String&gt; - A ResponseEntity containing an error message, if one occurred</div>
+     * </div>
      */
-    @GetMapping(value = "/card/info/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Card> fetchCardById(@PathVariable("id") int id) {
+    @GetMapping(value = "/api/card/info/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> fetchCardById(@PathVariable("id") int id) {
         try {
             log.info("Fetching card with ID: {}", id);
             Card fetchedCard = cardService.getById(id);
@@ -213,11 +217,11 @@ public class DissCardController {
             headers.setContentType(MediaType.APPLICATION_JSON);
             return fetchedCard != null
                     ? new ResponseEntity<>(fetchedCard, headers, HttpStatus.OK)
-                    : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                    : new ResponseEntity<>("Card not found", HttpStatus.NOT_FOUND);
         }
         catch (Exception ex) {
             log.error("Error fetching card with ID: {}", id);
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -225,16 +229,19 @@ public class DissCardController {
     /**
      * Searches DissCard's systems for a list of cards that match the specified keyword.
      * @param keyword String used to filter cards.
-     * @return A ResponseEntity containing a list of card JSON objects that match the specified keyword.
+     * @return <div>
+     *     <div>ResponseEntity&lt;List&lt;Card&gt;&gt; - A ResponseEntity containing a list of card JSON objects that match the specified keyword.</div>
+     *     <div>ResponseEntity&lt;String&gt; - A ResponseEntity containing an error message, if one occurred</div>
+     * </div>
      */
-    @GetMapping(value = "/card/search/{keyword}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Card>> fetchCardsByKeyword(@PathVariable("keyword") String keyword) {
+    @GetMapping(value = "/api/card/search/{keyword}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> fetchCardsByKeyword(@PathVariable("keyword") String keyword) {
         log.info("Searching for cards with keyword: {}", keyword);
         List<Card> fetchedCardByKeyword = cardService.searchByName(keyword);
 
         if (fetchedCardByKeyword == null || fetchedCardByKeyword.isEmpty()) {
             log.info("No cards available: {}", keyword);
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("No Cards Found", HttpStatus.NOT_FOUND);
         }
 
         return buildResponse(fetchedCardByKeyword);
@@ -243,10 +250,13 @@ public class DissCardController {
     /**
      * Adds a card to DissCard's systems.
      * @param card Card to be added.
-     * @return A ResponseEntity containing a JSON object representing the card that was added.
+     * @return <div>
+     *     <div>ResponseEntity&lt;Card&gt; - A ResponseEntity containing a JSON object representing the card that was added.</div>
+     *     <div>ResponseEntity&lt;String&gt; - A ResponseEntity containing an error message, if one occurred</div>
+     * </div>
      */
-    @PostMapping(value = "/card/add", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-     public ResponseEntity<Card> addCard(@RequestBody Card card) {
+    @PostMapping(value = "/api/card/add", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+     public ResponseEntity<Object> addCard(@RequestBody Card card) {
         log.info("Adding new card: {}", card);
         try {
             Card newCard = cardService.save(card);
@@ -254,17 +264,20 @@ public class DissCardController {
             return buildResponse(newCard);
         } catch (Exception e) {
             log.error("Error adding card: {}", e.getMessage());
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     /**
      * Searches the Pokemon TCG API for cards that match the given name
      * @param name Name of the card being searched for
-     * @return List of Pokemon card objects matching the given name
+     * @return <div>
+     *     <div>ResponseEntity&lt;List&lt;PokemonApiCard&gt;&gt; - List of Pokemon card objects matching the given name</div>
+     *     <div>ResponseEntity&lt;String&gt; - A ResponseEntity containing an error message, if one occurred</div>
+     * </div>
      */
-    @GetMapping(value = "/PokemonAPI/search/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<PokemonApiCard>> searchPokemonApiCardsByName(@PathVariable("name") String name) {
+    @GetMapping(value = "/api/PokemonAPI/search/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> searchPokemonApiCardsByName(@PathVariable("name") String name) {
         log.info("Searching Pokemon API for cards with name: {}", name);
         try {
             List<PokemonApiCard> cardList = pokemonApiService.searchCardsByName(name);
@@ -273,17 +286,20 @@ public class DissCardController {
         }
         catch (Exception e) {
             log.error("Error searching Pokemon API for cards: {}", e.getMessage());
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 
     /**
      * Retrieves a Pokemon card object from the Pokemon TCG API based on its ID
      * @param id ID of Pokemon card
-     * @return Pokemon card object with the given ID
+     * @return <div>
+     *     <div>ResponseEntity&lt;PokemonApiCard&gt; - Pokemon card object with the given ID</div>
+     *     <div>ResponseEntity&lt;String&gt; - A ResponseEntity containing an error message, if one occurred</div>
+     * </div>
      */
-    @GetMapping(value = "/PokemonAPI/card/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<PokemonApiCard> fetchPokemonApiCardById(@PathVariable("id") String id) {
+    @GetMapping(value = "/api/PokemonAPI/card/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> fetchPokemonApiCardById(@PathVariable("id") String id) {
         log.info("Fetching card from Pokemon API with ID: {}", id);
         try {
             PokemonApiCard card = pokemonApiService.getCardById(id);
@@ -292,16 +308,16 @@ public class DissCardController {
         }
         catch (Exception e) {
             log.error("Error retrieving card from Pokemon API: {}", e.getMessage());
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 
     /**
      * Retrieves the URL of the small image of a Pokemon card object from the Pokemon TCG API
      * @param id ID of Pokemon card
-     * @return URL of the given card's small image
+     * @return URL of the given card's small image, or an error message if one occurred
      */
-    @GetMapping(value = "/PokemonAPI/image/small/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/api/PokemonAPI/image/small/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> fetchSmallPokemonApiCardImageUrlById(@PathVariable("id") String id) {
         log.info("Fetching small image from Pokemon API with card ID: {}", id);
         try {
@@ -311,16 +327,16 @@ public class DissCardController {
         }
         catch (Exception e) {
             log.error("Error retrieving small image from Pokemon API: {}", e.getMessage());
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 
     /**
      * Retrieves the URL of the large image of a Pokemon card object from the Pokemon TCG API
      * @param id ID of Pokemon card
-     * @return URL of the given card's large image
+     * @return URL of the given card's large image, or an error message if one occurred
      */
-    @GetMapping(value = "/PokemonAPI/image/large/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/api/PokemonAPI/image/large/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> fetchLargePokemonApiCardImageUrlById(@PathVariable("id") String id) {
         log.info("Fetching large image from Pokemon API with card ID: {}", id);
         try {
@@ -330,7 +346,7 @@ public class DissCardController {
         }
         catch (Exception e) {
             log.error("Error retrieving large image from Pokemon API: {}", e.getMessage());
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 
