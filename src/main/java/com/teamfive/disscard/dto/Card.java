@@ -23,6 +23,12 @@ public @Data class Card {
     private int id;
 
     /**
+     * ID of card in the Pokemon ID, if available
+     */
+    @SerializedName("pokemonApiId")
+    private int pokemonApiId;
+
+    /**
      * Name of card
      */
     @SerializedName("cardName")
