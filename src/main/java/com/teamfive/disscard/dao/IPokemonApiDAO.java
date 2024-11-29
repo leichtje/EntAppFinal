@@ -2,6 +2,7 @@ package com.teamfive.disscard.dao;
 
 import com.teamfive.disscard.dto.PokemonApiCard;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -28,14 +29,14 @@ public interface IPokemonApiDAO {
         int pageSize,
         String orderBy,
         String select
-    );
+    ) throws IOException;
 
     /**
-     *
+     * Retrieves a Pokemon TCG card object from the Pokemon TCG API based on the given ID
      * @param id The Id of the Pokemon TCG card object
      * @param select A comma delimited list of fields to return in the response (ex. ?select=id,name). By default,
      *      all fields are returned if this query parameter is not used.
      * @return The Pokemon TCG card object with the given ID
      */
-    PokemonApiCard getCard(String id, String select);
+    PokemonApiCard getCard(String id, String select) throws IOException ;
 }
