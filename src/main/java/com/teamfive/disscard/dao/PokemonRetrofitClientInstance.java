@@ -7,6 +7,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 /**
  * Class that generates and stores a Retrofit Client Instance for the Pokemon TCG API
  * that can be used elsewhere in the app
+ * @author Danny
  */
 public class PokemonRetrofitClientInstance {
     private static Retrofit retrofit;

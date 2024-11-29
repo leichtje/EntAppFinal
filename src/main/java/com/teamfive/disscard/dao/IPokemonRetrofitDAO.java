@@ -10,6 +10,7 @@ import java.util.List;
 
 /**
  * DAO Interface to be used by the Pokemon API Retrofit Client Instance
+ * @author Danny
  */
 public interface IPokemonRetrofitDAO {
     @Value("${pokemon-api.base-url}")
