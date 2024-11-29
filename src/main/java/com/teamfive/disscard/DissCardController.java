@@ -57,6 +57,22 @@ public class DissCardController {
      * @return DissCard home page.
      * Endpoint that generates the home page of the DissCard application's web UI
      */
+
+    @RequestMapping(value="/start", method=RequestMethod.GET, headers={"content-type=text/json"})
+    @ResponseBody
+    public Card readJSON(Model model) {
+        Card Card = fetchCardById(1).getBody();
+        model.addAttribute("Card", Card);
+        return Card;
+    }
+
+    @RequestMapping(value="/start", method=RequestMethod.GET)
+    public String read(Model model) {
+        log.info("User has entered the /start endpoint");
+        model.addAttribute("Card", new Card());
+        return "Start";
+    }
+
     @GetMapping("/")
     public String index(Model model) {
         // Add data to model for use in view here
@@ -82,38 +98,57 @@ public class DissCardController {
         return returnValue;
     }
     @GetMapping("/ExpensiveCards")
-    public String expensiveCards() {
-
+    public ModelAndView expensiveCards() {
         // Add data to model for use in view here
-
+        ModelAndView modelAndView = new ModelAndView();
+        try {
+            Iterable<Card> allCards;
+            allCards = fetchAllCards();
+            modelAndView.setViewName("MyCards");
+            modelAndView.addObject("allCards", allCards);
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("Unable to retrieve Expensive Cards", e);
+            modelAndView.setViewName("Error");
+        }
+        return modelAndView;
         // Return name of HTML template
-        return "ExpensiveCards";
     }
     @GetMapping("/PopularCards")
-    public String PopularCards() {
+    public ModelAndView PopularCards() {
 
         // Add data to model for use in view here
-
+        ModelAndView modelAndView = new ModelAndView();
+        try {
+            Iterable<Card> allCards;
+            allCards = fetchAllCards();
+            modelAndView.setViewName("MyCards");
+            modelAndView.addObject("allCards", allCards);
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("Unable to retrieve Popular Cards", e);
+            modelAndView.setViewName("Error");
+        }
+        return modelAndView;
         // Return name of HTML template
-        return "PopularCards";
+
     }
     @GetMapping("/MyCards")
     public ModelAndView MyCards() {
         // Add data to model for use in view here
-            ModelAndView modelAndView = new ModelAndView();
-            try {
-                Iterable<Card> allCards;
-                allCards = fetchAllCards();
-                modelAndView.setViewName("MyCards");
-                modelAndView.addObject("allCards", allCards);
-            } catch (Exception e) {
-                e.printStackTrace();
-                log.error("Unable to retrieve cards", e);
-                modelAndView.setViewName("Error");
-            }
-            return modelAndView;
+        ModelAndView modelAndView = new ModelAndView();
+        try {
+            Iterable<Card> allCards;
+            allCards = fetchAllCards();
+            modelAndView.setViewName("MyCards");
+            modelAndView.addObject("allCards", allCards);
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("Unable to retrieve cards", e);
+            modelAndView.setViewName("Error");
+        }
+        return modelAndView;
         // Return name of HTML template
-
     }
 
     /**
@@ -140,7 +175,6 @@ public class DissCardController {
             log.error(e.getMessage());
             return "error";
         }
-
     }
     // ===== Back-end endpoints =====
 
