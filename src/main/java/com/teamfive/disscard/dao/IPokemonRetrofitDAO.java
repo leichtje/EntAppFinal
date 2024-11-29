@@ -1,6 +1,7 @@
 package com.teamfive.disscard.dao;
 
 import com.teamfive.disscard.dto.PokemonApiCard;
+import com.teamfive.disscard.dto.PokemonApiResponse;
 import org.springframework.beans.factory.annotation.Value;
 
 import retrofit2.Call;
@@ -23,8 +24,8 @@ public interface IPokemonRetrofitDAO {
      * @param apiKey API Key for the Pokemon TCG API
      * @return List of card objects retrieved from the Pokemon TCG API, matching the given filters
      */
-    @GET("/cards/v2")
-    Call<List<PokemonApiCard>> searchCards(
+    @GET("/v2/cards")
+    Call<PokemonApiResponse<List<PokemonApiCard>>> searchCards(
         @Header("X-Api-Key") String apiKey,
         @Query("q") String q,
         @Query("page") int page,
@@ -43,7 +44,7 @@ public interface IPokemonRetrofitDAO {
      * @return The Pokemon card object with the given ID
      */
     @GET("/v2/cards/{id}")
-    Call<PokemonApiCard> getCard(
+    Call<PokemonApiResponse<PokemonApiCard>> getCard(
         @Header("X-Api-Key") String apiKey,
         @Path("id") String id,
         @Query("select") String select

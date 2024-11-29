@@ -60,7 +60,7 @@ public class PokemonApiService implements IPokemonApiService {
 
     private PokemonApiCard getNonNullCard(String id, String select) throws Exception {
         PokemonApiCard card = pokemonApiDAO.getCard(id, select);
-        if (card == null || card.getData() == null) {
+        if (card == null) {
             logger.error("Pokemon TCG Card does not exist");
             throw new Exception("Pokemon TCG Card does not exist");
         }
@@ -68,7 +68,7 @@ public class PokemonApiService implements IPokemonApiService {
     }
 
     private PokemonApiCard.ImageHash getNonNullImageHash(PokemonApiCard card) throws Exception {
-        PokemonApiCard.ImageHash cardImages = card.getData().getImages();
+        PokemonApiCard.ImageHash cardImages = card.getImages();
         if (cardImages == null) {
             logger.error("Pokemon TCG Card does not have any images");
             throw new Exception("Pokemon TCG Card does not have any images");
