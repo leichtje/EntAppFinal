@@ -14,26 +14,26 @@ public interface IPokemonApiService {
      * @param name Name of the card being searched for
      * @return List of Pokemon card objects that match the given name
      */
-    List<PokemonApiCard> searchCardsByName(String name);
+    List<PokemonApiCard> searchCardsByName(String name) throws Exception;
 
     /**
      * Retrieves the card with the given ID from the API
      * @param id ID of the given card object in the Pokemon TCG API
      * @return Pokemon card object with the given ID
      */
-    PokemonApiCard getCardById(String id);
+    PokemonApiCard getCardById(String id) throws Exception;
 
     /**
      * Retrieves the url to the small image of the Pokemon card object with the given ID in the Pokemon TCG API
      * @param id ID of the given card object in the Pokemon TCG API
      * @return String containing the URL to the card's small image
      */
-    String getSmallImageUrlById(String id);
+    String getSmallImageUrlById(String id) throws Exception;
 
     /**
      * Retrieves the url to the large image of the Pokemon card object with the given ID in the Pokemon TCG API
      * @param id ID of the given card object in the Pokemon TCG API
      * @return String containing the URL to the card's large image
      */
-    String getLargeImageUrlById(String id);
+    String getLargeImageUrlById(String id) throws Exception;
 }
