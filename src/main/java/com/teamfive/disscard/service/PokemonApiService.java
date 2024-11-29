@@ -14,7 +14,7 @@ import java.util.List;
 @Service
 public class PokemonApiService implements IPokemonApiService {
     private static final Logger logger = LoggerFactory.getLogger(PokemonApiService.class);
-    private PokemonApiDAO pokemonApiDAO;
+    private final PokemonApiDAO pokemonApiDAO;
 
     @Autowired
     public PokemonApiService(PokemonApiDAO pokemonApiDAO) {
@@ -23,13 +23,18 @@ public class PokemonApiService implements IPokemonApiService {
 
     @Override
     public List<PokemonApiCard> searchCardsByName(String name) throws Exception {
-        return pokemonApiDAO.searchCards(
+        List<PokemonApiCard> cardList = pokemonApiDAO.searchCards(
             "name:\"" + name + "\"",
             1,
             255,
             "number",
             null
         );
+        if (cardList == null || cardList.isEmpty()) {
+            logger.error("No Pokemon TCG Cards Found");
+            throw new Exception("No Pokemon TCG Cards Found");
+        }
+        return cardList;
     }
 
     @Override

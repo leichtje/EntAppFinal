@@ -1,8 +1,11 @@
 package com.teamfive.disscard;
 
 import com.teamfive.disscard.dto.Card;
+import com.teamfive.disscard.dto.PokemonApiCard;
 import com.teamfive.disscard.service.ICardService;
 
+import com.teamfive.disscard.service.IPokemonApiService;
+import com.teamfive.disscard.service.PokemonApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -36,10 +39,12 @@ public class DissCardController {
     private static final Logger log = LoggerFactory.getLogger(DissCardController.class);
 
     private final ICardService cardService;
+    private final IPokemonApiService pokemonApiService;
 
     @Autowired
-    public DissCardController(ICardService cardService) {
+    public DissCardController(ICardService cardService, IPokemonApiService pokemonApiService) {
         this.cardService = cardService;
+        this.pokemonApiService = pokemonApiService;
     }
 
     private List<Card> allCards;
@@ -216,6 +221,82 @@ public class DissCardController {
         } catch (Exception e) {
             log.error("Error adding card: {}", e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * Searches the Pokemon TCG API for cards that match the given name
+     * @param name Name of the card being searched for
+     * @return List of Pokemon card objects matching the given name
+     */
+    @GetMapping(value = "/PokemonAPI/search/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<PokemonApiCard>> searchPokemonApiCardsByName(@PathVariable("name") String name) {
+        log.info("Searching Pokemon API for cards with name: {}", name);
+        try {
+            List<PokemonApiCard> cardList = pokemonApiService.searchCardsByName(name);
+            log.info("Found {} cards", cardList.size());
+            return buildResponse(cardList);
+        }
+        catch (Exception e) {
+            log.error("Error searching Pokemon API for cards: {}", e.getMessage());
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    /**
+     * Retrieves a Pokemon card object from the Pokemon TCG API based on its ID
+     * @param id ID of Pokemon card
+     * @return Pokemon card object with the given ID
+     */
+    @GetMapping(value = "/PokemonAPI/card/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<PokemonApiCard> fetchPokemonApiCardById(@PathVariable("id") String id) {
+        log.info("Fetching card from Pokemon API with ID: {}", id);
+        try {
+            PokemonApiCard card = pokemonApiService.getCardById(id);
+            log.info("Card retrieved from Pokemon API successfully: {}", card);
+            return buildResponse(card);
+        }
+        catch (Exception e) {
+            log.error("Error retrieving card from Pokemon API: {}", e.getMessage());
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    /**
+     * Retrieves the URL of the small image of a Pokemon card object from the Pokemon TCG API
+     * @param id ID of Pokemon card
+     * @return URL of the given card's small image
+     */
+    @GetMapping(value = "/PokemonAPI/image/small/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> fetchSmallPokemonApiCardImageUrlById(@PathVariable("id") String id) {
+        log.info("Fetching small image from Pokemon API with card ID: {}", id);
+        try {
+            String smallImageUrl = pokemonApiService.getSmallImageUrlById(id);
+            log.info("Small image retrieved from Pokemon API successfully: {}", smallImageUrl);
+            return buildResponse(smallImageUrl);
+        }
+        catch (Exception e) {
+            log.error("Error retrieving small image from Pokemon API: {}", e.getMessage());
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    /**
+     * Retrieves the URL of the large image of a Pokemon card object from the Pokemon TCG API
+     * @param id ID of Pokemon card
+     * @return URL of the given card's large image
+     */
+    @GetMapping(value = "/PokemonAPI/image/large/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> fetchLargePokemonApiCardImageUrlById(@PathVariable("id") String id) {
+        log.info("Fetching large image from Pokemon API with card ID: {}", id);
+        try {
+            String largeImageUrl = pokemonApiService.getLargeImageUrlById(id);
+            log.info("Large image retrieved from Pokemon API successfully: {}", largeImageUrl);
+            return buildResponse(largeImageUrl);
+        }
+        catch (Exception e) {
+            log.error("Error retrieving large image from Pokemon API: {}", e.getMessage());
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
