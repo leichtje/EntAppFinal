@@ -4,12 +4,15 @@ import com.teamfive.disscard.dto.Card;
 import com.teamfive.disscard.helper.TestingUtils;
 import com.teamfive.disscard.service.ICardService;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import com.teamfive.disscard.service.IPokemonApiService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
@@ -28,6 +31,8 @@ public class DissCardControllerTests {
 
     @MockBean
     private ICardService cardService;
+    @MockBean
+    private IPokemonApiService pokemonApiService;
 
     // ===== Frequently-used methods =====
 
@@ -37,7 +42,7 @@ public class DissCardControllerTests {
     private void givenCardServiceIsAvailable() {
         logger.info("Initializing controller and card service mock");
         // Set controller's card service to card service mock
-        controller = new DissCardController(cardService);
+        controller = new DissCardController(cardService, pokemonApiService);
     }
 
     /**
@@ -78,6 +83,17 @@ public class DissCardControllerTests {
         assertEquals(fetchedCard, card);
     }
 
+    private <E> E validateResponseObject(ResponseEntity<Object> response) {
+        if (response == null ||
+            response.getStatusCode() != HttpStatus.OK
+        ) {
+            logger.error("Controller returned an error");
+            return null;
+        }
+        ResponseEntity<E> validatedResponse = (ResponseEntity<E>) response;
+        return validatedResponse.getBody();
+    }
+
     // ===== Tests =====
 
     /**
@@ -93,7 +109,8 @@ public class DissCardControllerTests {
 
     private List<Card> whenFetchAllCards() {
         logger.info("Fetching list of all cards");
-        return controller.fetchAllCards();
+        ResponseEntity<Object> response = controller.fetchAllCards();
+        return validateResponseObject(response);
     }
 
     /**
@@ -109,8 +126,8 @@ public class DissCardControllerTests {
 
     private Card whenFetchingCardById() {
         logger.info("Fetching card by id");
-        ResponseEntity<Card> response = controller.fetchCardById(card.getId());
-        return response.getBody();
+        ResponseEntity<Object> response = controller.fetchCardById(card.getId());
+        return validateResponseObject(response);
     }
 
     /**
@@ -126,8 +143,8 @@ public class DissCardControllerTests {
 
     private List<Card> whenFetchingCardsByKeyword() {
         logger.info("Fetching list of cards by keyword");
-        ResponseEntity<List<Card>> response = controller.fetchCardsByKeyword(card.getCardName());
-        return response.getBody();
+        ResponseEntity<Object> response = controller.fetchCardsByKeyword(card.getCardName());
+        return validateResponseObject(response);
     }
 
     /**
@@ -156,7 +173,7 @@ public class DissCardControllerTests {
 
         // Add card through controller
         logger.info("Adding card to system");
-        ResponseEntity<Card> response = controller.addCard(card);
-        return response.getBody();
+        ResponseEntity<Object> response = controller.addCard(card);
+        return validateResponseObject(response);
     }
 }
