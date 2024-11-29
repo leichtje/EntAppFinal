@@ -62,7 +62,7 @@ public class DissCardController {
     @RequestMapping(value="/start", method=RequestMethod.GET, headers={"content-type=text/json"})
     @ResponseBody
     public Card readJSON(Model model) {
-        Card Card = (Card)fetchCardById(1).getBody();
+        Card Card = cardService.getById(1);
         model.addAttribute("Card", Card);
         return Card;
     }
@@ -104,7 +104,7 @@ public class DissCardController {
         ModelAndView modelAndView = new ModelAndView();
         try {
             Iterable<Card> allCards;
-            allCards = fetchAllCards();
+            allCards = cardService.getAll();
             modelAndView.setViewName("MyCards");
             modelAndView.addObject("allCards", allCards);
         } catch (Exception e) {
@@ -122,7 +122,7 @@ public class DissCardController {
         ModelAndView modelAndView = new ModelAndView();
         try {
             Iterable<Card> allCards;
-            allCards = fetchAllCards();
+            allCards = cardService.getAll();
             modelAndView.setViewName("MyCards");
             modelAndView.addObject("allCards", allCards);
         } catch (Exception e) {
@@ -140,7 +140,7 @@ public class DissCardController {
         ModelAndView modelAndView = new ModelAndView();
         try {
             Iterable<Card> allCards;
-            allCards = fetchAllCards();
+            allCards = cardService.getAll();
             modelAndView.setViewName("MyCards");
             modelAndView.addObject("allCards", allCards);
         } catch (Exception e) {
@@ -182,18 +182,20 @@ public class DissCardController {
 
     /**
      * Fetches a list of all cards registered with DissCard.
-     * @return A list of JSON objects representing cards.
+     * @return <div>
+     *     <div>ResponseEntity&lt;List&lt;Card&gt;&gt; - A list of JSON objects representing cards.</div>
+     *     <div>ResponseEntity&lt;String&gt; - A ResponseEntity containing an error message, if one occurred</div>
+     * </div>
      */
     @GetMapping(value = "/api/card/list", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    public List<Card> fetchAllCards() {
+    public ResponseEntity<Object> fetchAllCards() {
         try {
             log.info("Fetching all cards.");
-            return cardService.getAll();
+            List<Card> cardList = cardService.getAll();
+            return buildResponse(cardList);
         } catch (Exception e) {
-            log.info("Fetching all cards failed.");
-            log.error(e.getMessage());
-            return null;
+            log.error("Fetching all cards failed: {}", e.getMessage());
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
