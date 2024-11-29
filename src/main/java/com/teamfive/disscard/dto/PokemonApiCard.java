@@ -1,5 +1,6 @@
 package com.teamfive.disscard.dto;
 
+import com.google.gson.annotations.SerializedName;
 import lombok.Data;
 import java.util.List;
 
@@ -15,36 +16,39 @@ public @Data class PokemonApiCard {
 
     // Data Fields
 
-    private String id;
-    private String name;
-    private String supertype;
-    private List<String> subtypes;
-    private String level;
-    private String hp;
-    private List<String> types;
-    private String evolvesFrom;
-    private List<String> evolvesTo;
-    private List<String> rules;
-    private AncientTraitHash ancientTrait;
-    private List<AbilityHash> abilities;
-    private List<AttackHash> attacks;
-    private List<TypeMatchupHash> weaknesses;
-    private List<TypeMatchupHash> resistances;
-    private List<String> retreatCost;
-    private int convertedRetreatCost;
-    private String number;
-    private String artist;
-    private String rarity;
-    private String flavorText;
-    private List<Integer> nationalPokedexNumbers;
-    private LegalityHash legalities;
-    private String regulationMark;
-    private ImageHash images;
-    private TcgPlayerHash tcgplayer;
-    private CardMarketHash cardmarket;
+    private DataHash data;
 
     // Complex JSON Types
 
+    public static @Data class DataHash {
+        private String id;
+        private String name;
+        private String supertype;
+        private List<String> subtypes;
+        private String level;
+        private String hp;
+        private List<String> types;
+        private String evolvesFrom;
+        private List<String> evolvesTo;
+        private List<String> rules;
+        private AncientTraitHash ancientTrait;
+        private List<AbilityHash> abilities;
+        private List<AttackHash> attacks;
+        private List<TypeMatchupHash> weaknesses;
+        private List<TypeMatchupHash> resistances;
+        private List<String> retreatCost;
+        private int convertedRetreatCost;
+        private String number;
+        private String artist;
+        private String rarity;
+        private String flavorText;
+        private List<Integer> nationalPokedexNumbers;
+        private LegalityHash legalities;
+        private String regulationMark;
+        private ImageHash images;
+        private TcgPlayerHash tcgplayer;
+        private CardMarketHash cardmarket;
+    }
     public static @Data class AncientTraitHash {
         private String name;
         private String text;

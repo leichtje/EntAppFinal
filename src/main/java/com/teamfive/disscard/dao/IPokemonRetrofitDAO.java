@@ -23,7 +23,7 @@ public interface IPokemonRetrofitDAO {
      * @param apiKey API Key for the Pokemon TCG API
      * @return List of card objects retrieved from the Pokemon TCG API, matching the given filters
      */
-    @GET("/cards/")
+    @GET("/cards/v2")
     Call<List<PokemonApiCard>> searchCards(
         @Header("X-Api-Key") String apiKey,
         @Query("q") String q,
@@ -42,7 +42,7 @@ public interface IPokemonRetrofitDAO {
      * @param apiKey API Key for the Pokemon TCG API
      * @return The Pokemon card object with the given ID
      */
-    @GET("/cards/{id}")
+    @GET("/v2/cards/{id}")
     Call<PokemonApiCard> getCard(
         @Header("X-Api-Key") String apiKey,
         @Path("id") String id,
