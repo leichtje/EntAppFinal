@@ -1,6 +1,7 @@
 package com.teamfive.disscard;
 
 import com.teamfive.disscard.dto.Card;
+import com.teamfive.disscard.helper.TestingUtils;
 import com.teamfive.disscard.service.ICardService;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
@@ -40,25 +41,11 @@ public class DissCardControllerTests {
     }
 
     /**
-     * Generate a new card
-     */
-    private void generateCard() {
-        logger.info("Generating card");
-        card = new Card();
-        card.setId(9);
-        card.setCardName("Charizard");
-        card.setSeries("Pokemon");
-        card.setFavoritesNum(10000);
-        card.setMarketAvg("$3,600");
-        card.setPopularity(8000);
-    }
-
-    /**
      * Generate one card and save it to the card service mock
      */
     private void whenOneCardSavedToSystem() {
         // Generate Card
-        generateCard();
+        card = TestingUtils.generateCharizardCard();
 
         // Return card when getting card by ID
         logger.info("Setting service mock to return generated card when getting by id");
@@ -155,7 +142,7 @@ public class DissCardControllerTests {
 
     private Card whenAddCardToSystem() {
         // Generate Card
-        generateCard();
+        card = TestingUtils.generateCharizardCard();
 
         // Return card when saving card
         logger.info("Setting service mock to return generated card when saving generated card");

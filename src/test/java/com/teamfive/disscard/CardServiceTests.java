@@ -2,9 +2,12 @@ package com.teamfive.disscard;
 
 import com.teamfive.disscard.dao.ICardDAO;
 import com.teamfive.disscard.dto.Card;
+import com.teamfive.disscard.helper.TestingUtils;
 import com.teamfive.disscard.service.CardServiceStub;
 import com.teamfive.disscard.service.ICardService;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -26,38 +29,38 @@ class CardServiceTests {
     @MockBean
     private ICardDAO cardDAO;
 
-    @Test
-    void contextLoads() {
-    }
+    private static final Logger logger = LoggerFactory.getLogger(CardServiceTests.class);
 
     @Test
     void getCardById_returnsCharizardForId9() throws Exception {
-        System.out.println("Setting up trading card catalog availability");
+        logger.info("Setting up trading card catalog availability");
         givenTradingCardCatalogAvailable();
         
-        System.out.println("Searching card with ID 9");
+        logger.info("Searching card with ID 9");
         whenSearchCardWithId9();
         
-        System.out.println("Asserting that the returned card data matches Charizard's attributes");
+        logger.info("Asserting that the returned card data matches Charizard's attributes");
         thenReturnCharizardCardDataForId9();
     }
     
     private void givenTradingCardCatalogAvailable() throws Exception {
-        System.out.println("Mocking cardDAO save method to return the card");
+        logger.info("Mocking cardDAO save method to return the card");
         when(cardDAO.save(card)).thenReturn(card);
         cardService = new CardServiceStub(cardDAO);
     }
     
     private void whenSearchCardWithId9() {
-        System.out.println("Fetching card by ID 9");
+        logger.info("Fetching card by ID 9");
         card = cardService.getById(9);
     }
     
     private void thenReturnCharizardCardDataForId9() {
-        System.out.println("Checking if the returned card is Charizard");
+        logger.info("Checking if the returned card is Charizard");
         assertEquals("Charizard", card.getCardName());
-        assertEquals(8000, card.getPopularity());
+        assertEquals("Pokemon", card.getSeries());
+        assertEquals(10000, card.getFavoritesNum());
         assertEquals("$3,600", card.getMarketAvg());
+        assertEquals(8000, card.getPopularity());
     }
 
     @Test
@@ -84,11 +87,7 @@ class CardServiceTests {
 
     private void whenSearchCardByNameUsingKeywordChari() {
         cards = cardService.searchByName("Chari");
-
-        card.setId(9);
-        card.setCardName("Charizard");
-        card.setPopularity(8000);
-        card.setMarketAvg("$3,600");
+        card = TestingUtils.generateCharizardCard();
     }
 
     private void thenReturnListContainingCharizard() {
@@ -108,8 +107,10 @@ class CardServiceTests {
 
     private void whenBlastoiseCardDataUploadedWithValidFields() {
         card.setCardName("Blastoise");
-        card.setPopularity(12000);
+        card.setSeries("Pokemon");
+        card.setFavoritesNum(800);
         card.setMarketAvg("$2,000");
+        card.setPopularity(12000);
     }
 
     private void thenCreateBlastoiseCardAndReturnSuccessfulResponse() throws Exception {
@@ -127,8 +128,10 @@ class CardServiceTests {
 
     private void whenCardDataUploadedWithEmptyName() {
         card.setCardName("");
-        card.setPopularity(12000);
+        card.setSeries("Pokemon");
+        card.setFavoritesNum(800);
         card.setMarketAvg("$2,000");
+        card.setPopularity(12000);
     }
 
     private void thenReturnBlankNameIsInvalid() throws Exception {

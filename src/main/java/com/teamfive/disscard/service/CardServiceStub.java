@@ -2,6 +2,9 @@ package com.teamfive.disscard.service;
 
 import com.teamfive.disscard.dao.ICardDAO;
 import com.teamfive.disscard.dto.Card;
+import com.teamfive.disscard.helper.TestingUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -11,6 +14,7 @@ import java.util.List;
 public class CardServiceStub implements ICardService {
 
     private ICardDAO cardDAO;
+    private static final Logger logger = LoggerFactory.getLogger(CardServiceStub.class);
 
     public CardServiceStub() {}
 
@@ -21,12 +25,7 @@ public class CardServiceStub implements ICardService {
     @Override
     public Card getById(int id) {
         if (id == 9) {
-            Card card = new Card();
-            card.setId(9);
-            card.setCardName("Charizard");
-            card.setPopularity(8000);
-            card.setMarketAvg("$3,600");
-            return card;
+            return TestingUtils.generateCharizardCard();
         } else {
             return null;
         }
@@ -42,11 +41,7 @@ public class CardServiceStub implements ICardService {
     @Override
     public List<Card> searchByName(String keyword) {
         if (keyword.equals("Chari")) {
-            Card card = new Card();
-            card.setId(9);
-            card.setCardName("Charizard");
-            card.setPopularity(8000);
-            card.setMarketAvg("$3,600");
+            Card card = TestingUtils.generateCharizardCard();
     
             List<Card> searchResults = new ArrayList<>();
             searchResults.add(card);
@@ -68,13 +63,26 @@ public class CardServiceStub implements ICardService {
                 return savedCard;
             }
         } catch (Exception e) {
+
             System.err.println("Error saving card: " + e.getMessage());
 
+            logger.error("Error saving card: {}", e.getMessage());
+          
             return null;
         }
     }
 
-    private boolean isValidCard(Card card) {
+    @Override
+    public void delete(int id) {
+        cardDAO.delete(id);
+    }
+
+    /**
+     * Used to determine if a card and it's values are valid.
+     * @param card The card to check for validity.
+     * @return True if the card is valid, false if not.
+     */
+    private static boolean isValidCard(Card card) {
         return card != null && !card.getCardName().isBlank();
     }
     
