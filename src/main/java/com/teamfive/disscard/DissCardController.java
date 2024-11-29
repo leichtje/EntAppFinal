@@ -37,17 +37,13 @@ public class DissCardController {
 
     private final ICardService cardService;
 
-
-//    private final Logger log = LoggerFactory.getLogger(this.getClass());
-
-    // Constructor injection for better testability and immutability
-
     @Autowired
     public DissCardController(ICardService cardService) {
         this.cardService = cardService;
     }
 
     private List<Card> allCards;
+
     // ===== Front-end endpoints =====
 
     /**
@@ -128,7 +124,7 @@ public class DissCardController {
         // Return name of HTML template
         return "CardInfo";
     }
-//searching for card
+    //searching for card
     @GetMapping("/card/search/{keyword}")
     public String searchCards(@RequestParam(value="keyword", required=false, defaultValue="None")  String keyword, Model model) {
         try {
@@ -142,6 +138,7 @@ public class DissCardController {
         }
 
     }
+
     // ===== Back-end endpoints =====
 
     /**
