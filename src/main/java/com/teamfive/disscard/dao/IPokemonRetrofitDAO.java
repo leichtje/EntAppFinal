@@ -13,11 +13,6 @@ import java.util.List;
  * @author Danny
  */
 public interface IPokemonRetrofitDAO {
-    @Value("${pokemon-api.base-url}")
-    String BASE_URL = "";
-    @Value("${pokemon-api.api-key}")
-    String API_KEY = "";
-
     /**
      * Retrieves a list of cards from the Pokemon TCG API that is filtered based
      * on the given parameters.
@@ -25,11 +20,12 @@ public interface IPokemonRetrofitDAO {
      *     For more detailed documentation of the format of the parameters, please visit
      *     <a href="https://docs.pokemontcg.io/api-reference/cards/search-cards">the official documentation</a>
      * </div>
+     * @param apiKey API Key for the Pokemon TCG API
      * @return List of card objects retrieved from the Pokemon TCG API, matching the given filters
      */
-    @Headers({"X-Api-Key: " + API_KEY})
-    @GET(BASE_URL + "cards/")
+    @GET("/cards/")
     Call<List<PokemonApiCard>> searchCards(
+        @Header("X-Api-Key") String apiKey,
         @Query("q") String q,
         @Query("page") int page,
         @Query("pageSize") int pageSize,
@@ -43,11 +39,12 @@ public interface IPokemonRetrofitDAO {
      *     For more detailed documentation of the format of the parameters, please visit
      *     <a href="https://docs.pokemontcg.io/api-reference/cards/get-card">the official documentation</a>
      * </div>
+     * @param apiKey API Key for the Pokemon TCG API
      * @return The Pokemon card object with the given ID
      */
-    @Headers({"X-Api-Key: " + API_KEY})
-    @GET(BASE_URL + "cards/{id}")
+    @GET("/cards/{id}")
     Call<PokemonApiCard> getCard(
+        @Header("X-Api-Key") String apiKey,
         @Path("id") String id,
         @Query("select") String select
     );
