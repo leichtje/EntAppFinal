@@ -184,7 +184,7 @@ public class DissCardController {
      * Fetches a list of all cards registered with DissCard.
      * @return A list of JSON objects representing cards.
      */
-    @GetMapping(value = "/card/list", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/api/card/list", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public List<Card> fetchAllCards() {
         try {
@@ -203,7 +203,7 @@ public class DissCardController {
      * @return A ResponseEntity containing a JSON object representing a card.
      * Fetches a card's info based on its ID
      */
-    @GetMapping(value = "/card/info/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/api/card/info/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Card> fetchCardById(@PathVariable("id") int id) {
         try {
             log.info("Fetching card with ID: {}", id);
@@ -227,7 +227,7 @@ public class DissCardController {
      * @param keyword String used to filter cards.
      * @return A ResponseEntity containing a list of card JSON objects that match the specified keyword.
      */
-    @GetMapping(value = "/card/search/{keyword}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/api/card/search/{keyword}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Card>> fetchCardsByKeyword(@PathVariable("keyword") String keyword) {
         log.info("Searching for cards with keyword: {}", keyword);
         List<Card> fetchedCardByKeyword = cardService.searchByName(keyword);
@@ -245,7 +245,7 @@ public class DissCardController {
      * @param card Card to be added.
      * @return A ResponseEntity containing a JSON object representing the card that was added.
      */
-    @PostMapping(value = "/card/add", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/api/card/add", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
      public ResponseEntity<Card> addCard(@RequestBody Card card) {
         log.info("Adding new card: {}", card);
         try {
@@ -263,7 +263,7 @@ public class DissCardController {
      * @param name Name of the card being searched for
      * @return List of Pokemon card objects matching the given name
      */
-    @GetMapping(value = "/PokemonAPI/search/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/api/PokemonAPI/search/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<PokemonApiCard>> searchPokemonApiCardsByName(@PathVariable("name") String name) {
         log.info("Searching Pokemon API for cards with name: {}", name);
         try {
@@ -282,7 +282,7 @@ public class DissCardController {
      * @param id ID of Pokemon card
      * @return Pokemon card object with the given ID
      */
-    @GetMapping(value = "/PokemonAPI/card/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/api/PokemonAPI/card/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<PokemonApiCard> fetchPokemonApiCardById(@PathVariable("id") String id) {
         log.info("Fetching card from Pokemon API with ID: {}", id);
         try {
@@ -301,7 +301,7 @@ public class DissCardController {
      * @param id ID of Pokemon card
      * @return URL of the given card's small image
      */
-    @GetMapping(value = "/PokemonAPI/image/small/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/api/PokemonAPI/image/small/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> fetchSmallPokemonApiCardImageUrlById(@PathVariable("id") String id) {
         log.info("Fetching small image from Pokemon API with card ID: {}", id);
         try {
@@ -320,7 +320,7 @@ public class DissCardController {
      * @param id ID of Pokemon card
      * @return URL of the given card's large image
      */
-    @GetMapping(value = "/PokemonAPI/image/large/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/api/PokemonAPI/image/large/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> fetchLargePokemonApiCardImageUrlById(@PathVariable("id") String id) {
         log.info("Fetching large image from Pokemon API with card ID: {}", id);
         try {
