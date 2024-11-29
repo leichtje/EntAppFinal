@@ -7,8 +7,9 @@ import java.util.List;
  * DTO for card objects returned by the Pokemon TCG API we're using
  * <div>
  *     For more thorough documentation on the contents of this class, please visit
- *     the official documentation at <a>https://docs.pokemontcg.io/api-reference/cards/card-object</a>
+ *     <a href="https://docs.pokemontcg.io/api-reference/cards/card-object">the official documentation</a>
  * </div>
+ * @author Danny
  */
 public @Data class PokemonApiCard {
 
