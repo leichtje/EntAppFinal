@@ -18,7 +18,6 @@ import static org.mockito.Mockito.*;
 @SpringBootTest
 public class CardDAOTests {
 
-    //@Autowired
     ICardDAO cardDAO;
     Card card;
     // Used to compare card submitted to be saved and the card returned after saving.

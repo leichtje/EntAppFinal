@@ -3,14 +3,13 @@ package com.teamfive.disscard;
 import com.teamfive.disscard.dao.ICardDAO;
 import com.teamfive.disscard.dto.Card;
 import com.teamfive.disscard.helper.TestingUtils;
-import com.teamfive.disscard.service.CardServiceStub;
+import com.teamfive.disscard.service.CardService;
 import com.teamfive.disscard.service.ICardService;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,18 +20,19 @@ import static org.mockito.Mockito.*;
 @SpringBootTest
 class CardServiceTests {
 
-    @Autowired
     private ICardService cardService;
-    private Card card = new Card();
+    private Card card;
+    // Used to compare card submitted to be saved and the card returned after saving.
+    Card savedCard;
     private List<Card> cards = new ArrayList<>();
 
-    @MockBean
+    @Mock
     private ICardDAO cardDAO;
 
     private static final Logger logger = LoggerFactory.getLogger(CardServiceTests.class);
 
     @Test
-    void getCardById_returnsCharizardForId9() throws Exception {
+    void getCardById_returnsCharizardForId9() {
         logger.info("Setting up trading card catalog availability");
         givenTradingCardCatalogAvailable();
         
@@ -43,14 +43,14 @@ class CardServiceTests {
         thenReturnCharizardCardDataForId9();
     }
     
-    private void givenTradingCardCatalogAvailable() throws Exception {
+    private void givenTradingCardCatalogAvailable() {
         logger.info("Mocking cardDAO save method to return the card");
-        when(cardDAO.save(card)).thenReturn(card);
-        cardService = new CardServiceStub(cardDAO);
+        cardService = new CardService(cardDAO);
     }
     
     private void whenSearchCardWithId9() {
         logger.info("Fetching card by ID 9");
+        when(cardDAO.findById(9)).thenReturn(TestingUtils.generateCharizardCard());
         card = cardService.getById(9);
     }
     
@@ -64,13 +64,14 @@ class CardServiceTests {
     }
 
     @Test
-    void getCardById_returnsNotificationOfFailureFor0() throws Exception {
+    void getCardById_returnsNotificationOfFailureFor0() {
         givenTradingCardCatalogAvailable();
         whenSearchCardWithId0();
         thenReturnId0IsInvalid();
     }
 
     private void whenSearchCardWithId0() {
+        when(cardDAO.findById(0)).thenReturn(null);
         card = cardService.getById(0);
     }
 
@@ -79,19 +80,28 @@ class CardServiceTests {
     }
 
     @Test
-    void searchCardByName_returnListContainingCharizardFromKeywordChari() throws Exception {
+    void searchCardByName_returnListContainingCharizardFromKeywordChari() {
         givenTradingCardCatalogAvailable();
         whenSearchCardByNameUsingKeywordChari();
         thenReturnListContainingCharizard();
     }
 
     private void whenSearchCardByNameUsingKeywordChari() {
+        // Is what will be returned by card service
+        ArrayList<Card> searchResults = new ArrayList<>();
+        searchResults.add(TestingUtils.generateCharizardCard());
+
+        // Search results should be every name that contains the characters Chari
+        when(cardDAO.getByName("Chari")).thenReturn(searchResults);
         cards = cardService.searchByName("Chari");
-        card = TestingUtils.generateCharizardCard();
     }
 
     private void thenReturnListContainingCharizard() {
-        assertTrue(cards.contains(card));
+        // Making sure each card contains Chari as part of their name
+        for (Card card : cards) {
+            String cardName = card.getCardName();
+            assertTrue(cardName.contains("Chari"));
+        }
     }
 
     @Test
@@ -105,13 +115,19 @@ class CardServiceTests {
     private void givenAdminLoggedIn() {
     }
 
-    private void whenBlastoiseCardDataUploadedWithValidFields() {
+    private void whenBlastoiseCardDataUploadedWithValidFields() throws Exception {
         card = TestingUtils.generateBlastoiseCard();
+        when(cardDAO.save(card)).thenReturn(card);
+        savedCard = cardService.save(card);
+        verify(cardDAO, atLeastOnce()).save(card);
     }
 
-    private void thenCreateBlastoiseCardAndReturnSuccessfulResponse() throws Exception {
-        assertEquals(card, cardService.save(card));
-        verify(cardDAO, atLeastOnce()).save(card);
+    private void thenCreateBlastoiseCardAndReturnSuccessfulResponse() {
+        assertEquals(card.getCardName(), savedCard.getCardName());
+        assertEquals(card.getSeries(), savedCard.getSeries());
+        assertEquals(card.getFavoritesNum(), savedCard.getFavoritesNum());
+        assertEquals(card.getMarketAvg(), savedCard.getMarketAvg());
+        assertEquals(card.getPopularity(), savedCard.getPopularity());
     }
 
     @Test
@@ -122,13 +138,13 @@ class CardServiceTests {
         thenReturnBlankNameIsInvalid();
     }
 
-    private void whenCardDataUploadedWithEmptyName() {
+    private void whenCardDataUploadedWithEmptyName() throws Exception {
         card = TestingUtils.generateBlastoiseCard();
         card.setCardName("");
+        when(cardDAO.save(card)).thenThrow(Exception.class);
     }
 
-    private void thenReturnBlankNameIsInvalid() throws Exception {
-        assertNotEquals(card, cardService.save(card));
-        verify(cardDAO, atLeastOnce()).save(card);
+    private void thenReturnBlankNameIsInvalid() {
+        assertThrows(Exception.class, () -> cardService.save(card));
     }
 }
