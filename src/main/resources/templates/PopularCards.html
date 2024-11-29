@@ -14,18 +14,20 @@
 <body style="background-color: #1e2441">
 <div style="background-color: #1e2441; color: white">
     <h3>Popular Finds</h3>
-    <div th:each="card : ${Card}">
-        <a th:href="@{'/card/info/' + ${cards.id} + '/'}" class="list-group-item list-group-item-action">
-        <div class="card h-100">
-            <img src="https://example.com/img/sample.jpg" class="card-img-top" th:alt="${card.cardName}">
-            <div class="card-body">
-                <h5 th:text="${card.cardName}"></h5>
-                <p th:text="${card.series}"></p>
-                <p th:text="${card.popularity}"></p>
-            </div>
-        </div>
-        </a>
+    <div class="row row-cols-1 row-cols-md-6 g-4">
 
+        <div th:each="card : ${allCards}">
+            <a th:href="@{'/card/info/' + ${cards.id} + '/'}" class="list-group-item list-group-item-action">
+            <div class="card h-100">
+                <img src="https://example.com/img/sample.jpg" class="card-img-top" th:alt="${card.cardName}">
+                <div class="card-body">
+                    <h5 th:text="${card.cardName}"></h5>
+                    <p th:text="${card.series}"></p>
+                    <p th:text="${card.popularity}"></p>
+                </div>
+            </div>
+            </a>
+        </div>
 
     </div>
 </div>

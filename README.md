@@ -123,11 +123,11 @@ Isabelle Kramer - UI Designer
 
 Danny Murray - Business Logic / Persistence
 
-Austin Schnee - Business Logic Development
+Austin Schnee - Business Logic / Persistence
 
 Paul Sparks - Business Logic / Persistence
 
-Brandon Robinson - UI Specialist
+Brandon Robinson - UI Designer
 
 Jonathon Leicht - Scrum Maser / QA
 
