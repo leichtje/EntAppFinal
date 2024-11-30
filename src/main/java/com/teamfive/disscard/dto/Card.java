@@ -26,7 +26,7 @@ public @Data class Card {
      * ID of card in the Pokemon ID, if available
      */
     @SerializedName("pokemonApiId")
-    private int pokemonApiId;
+    private String pokemonApiId;
 
     /**
      * Name of card
