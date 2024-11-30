@@ -23,7 +23,7 @@
 <div style="background-color: #1e2441; color: white">
 <h3>Our Finds</h3>
     <div class="row row-cols-1 row-cols-md-5 g-4">
-    <div th:each="cards: ${topCards}">
+    <div th:each="cards: ${cards}">
 
 
             <a th:href="@{'/card/info/' + ${cards.id} + '/'}" class="list-group-item list-group-item-action">
