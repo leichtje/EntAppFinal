@@ -86,7 +86,7 @@ public class DissCardController {
             for (id = 1; id < 6; id++){
                 card = cardService.getById(id);
                 topCards.add(card);
-                model.addAttribute("topCards", topCards);
+                model.addAttribute("cards", topCards);
 
                 // Return name of HTML template
                 returnValue = "home";
