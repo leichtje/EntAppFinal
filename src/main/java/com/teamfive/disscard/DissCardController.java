@@ -20,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -59,20 +60,6 @@ public class DissCardController {
      * Endpoint that generates the home page of the DissCard application's web UI
      */
 
-    @RequestMapping(value="/start", method=RequestMethod.GET, headers={"content-type=text/json"})
-    @ResponseBody
-    public Card readJSON(Model model) {
-        Card Card = fetchCardById(1).getBody();
-        model.addAttribute("Card", Card);
-        return Card;
-    }
-
-    @RequestMapping(value="/start", method=RequestMethod.GET)
-    public String read(Model model) {
-        log.info("User has entered the /start endpoint");
-        model.addAttribute("Card", new Card());
-        return "Start";
-    }
 
     @GetMapping("/")
     public String index(Model model) {
@@ -98,13 +85,18 @@ public class DissCardController {
         }
         return returnValue;
     }
+
+    /**
+     * Endpoint to present the most expensive cards at the time puled with information from the API.
+     */
     @GetMapping("/ExpensiveCards")
     public ModelAndView expensiveCards() {
-        // Add data to model for use in view here
+
         ModelAndView modelAndView = new ModelAndView();
         try {
             Iterable<Card> allCards;
             allCards = fetchAllCards();
+            Collections.synchronizedCollection((List<?>) allCards);
             modelAndView.setViewName("MyCards");
             modelAndView.addObject("allCards", allCards);
         } catch (Exception e) {
@@ -113,16 +105,21 @@ public class DissCardController {
             modelAndView.setViewName("Error");
         }
         return modelAndView;
-        // Return name of HTML template
+
     }
+
+    /**
+     * Endpoint to present a collection of the most Popular Cards at the time.
+     */
     @GetMapping("/PopularCards")
     public ModelAndView PopularCards() {
 
-        // Add data to model for use in view here
+
         ModelAndView modelAndView = new ModelAndView();
         try {
             Iterable<Card> allCards;
             allCards = fetchAllCards();
+            Collections.reverseOrder();
             modelAndView.setViewName("MyCards");
             modelAndView.addObject("allCards", allCards);
         } catch (Exception e) {
@@ -131,12 +128,16 @@ public class DissCardController {
             modelAndView.setViewName("Error");
         }
         return modelAndView;
-        // Return name of HTML template
+
 
     }
+
+    /**
+     * Presents the page of the active cards of the User.
+     */
     @GetMapping("/MyCards")
     public ModelAndView MyCards() {
-        // Add data to model for use in view here
+
         ModelAndView modelAndView = new ModelAndView();
         try {
             Iterable<Card> allCards;
@@ -149,7 +150,7 @@ public class DissCardController {
             modelAndView.setViewName("Error");
         }
         return modelAndView;
-        // Return name of HTML template
+
     }
 
     /**
